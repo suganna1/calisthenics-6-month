@@ -1,16 +1,37 @@
-const CACHE = "calisthenics-6mo-v1";
+const CACHE = "calisthenics-6mo-v3";
 const ASSETS = [
   "./",
   "./index.html",
   "./styles.css",
   "./app.js",
   "./program.js",
+  "./clips.js",
+  "./diet.js",
   "./manifest.json",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
   "./icons/icon-192-maskable.png",
   "./icons/icon-512-maskable.png",
-  "./icons/apple-touch-icon.png"
+  "./icons/apple-touch-icon.png",
+  "./clips/back-extension.mp4",
+  "./clips/bicycle-crunch.mp4",
+  "./clips/calf-raise.mp4",
+  "./clips/curtsy-lunge.mp4",
+  "./clips/dead-bug.mp4",
+  "./clips/glute-bridge.mp4",
+  "./clips/hollow-hold.mp4",
+  "./clips/pike-push-up.mp4",
+  "./clips/plank.mp4",
+  "./clips/push-up.mp4",
+  "./clips/reverse-lunge.mp4",
+  "./clips/russian-twist.mp4",
+  "./clips/shoulder-taps.mp4",
+  "./clips/side-lunge.mp4",
+  "./clips/side-plank.mp4",
+  "./clips/split-squat.mp4",
+  "./clips/squat.mp4",
+  "./clips/v-up.mp4",
+  "./clips/y-raise.mp4"
 ];
 
 self.addEventListener("install", (event) => {

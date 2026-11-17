@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Calisthenics 6-Month">
-  <meta name="description" content="A 6-month beginner calisthenics programme. 20-minute workouts, Monday to Friday. No equipment.">
+  <meta name="description" content="A 6-month beginner calisthenics programme with calorie and weight-loss estimates. 20-minute workouts, Monday to Friday.">
   <title>Calisthenics 6-Month</title>
   <link rel="manifest" href="./manifest.json">
   <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
@@ -30,6 +30,7 @@
         <span id="pct">0%</span>
       </div>
       <div class="bar"><span id="bar-fill"></span></div>
+      <div class="progress-line" id="kcal-line"></div>
     </header>
 
     <div id="plan-wrap">
@@ -49,6 +50,123 @@
       </div>
       <div class="sheet" id="sheet"></div>
     </div>
+
+
+    <section class="progress-page" id="progress" data-version="calories-v3">
+      <h2>Progress</h2>
+      <p class="lead">Calorie and weight figures are estimates, saved on this phone only. They are not medical advice.</p>
+
+      <h3>Your details</h3>
+      <div class="field">
+        <label>Sex</label>
+        <div class="seg" id="sex-seg">
+          <button type="button" data-sex="male">Male</button>
+          <button type="button" data-sex="female">Female</button>
+        </div>
+      </div>
+      <div class="fields-row">
+        <div class="field">
+          <label for="age">Age</label>
+          <input id="age" type="number" inputmode="numeric" min="16" max="100" placeholder="years">
+        </div>
+        <div class="field">
+          <label for="activity">Activity level</label>
+          <select id="activity">
+            <option value="sedentary">Sedentary (little or no exercise)</option>
+            <option value="light">Light (1–3 days/week)</option>
+            <option value="moderate">Moderate (3–5 days/week)</option>
+            <option value="very">Very active (6–7 days/week)</option>
+            <option value="extra">Extra active (physical job)</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Height</label>
+        <div class="seg" id="height-unit-seg">
+          <button type="button" data-hunit="cm">cm</button>
+          <button type="button" data-hunit="ft">ft / in</button>
+        </div>
+        <div id="height-cm-wrap" class="field">
+          <input id="height-cm" type="number" inputmode="decimal" min="120" max="230" step="0.1" placeholder="cm">
+        </div>
+        <div id="height-ft-wrap" class="pair field hidden">
+          <input id="height-ft" type="number" inputmode="numeric" min="4" max="7" step="1" placeholder="ft">
+          <input id="height-in" type="number" inputmode="decimal" min="0" max="11.9" step="0.1" placeholder="in">
+        </div>
+      </div>
+      <div class="field">
+        <label>Current weight</label>
+        <div class="seg" id="weight-unit-seg">
+          <button type="button" data-wunit="kg">kg</button>
+          <button type="button" data-wunit="st">st / lb</button>
+        </div>
+        <div id="weight-kg-wrap" class="field">
+          <input id="weight-kg" type="number" inputmode="decimal" min="30" max="300" step="0.1" placeholder="kg">
+        </div>
+        <div id="weight-st-wrap" class="pair field hidden">
+          <input id="weight-st" type="number" inputmode="numeric" min="4" max="40" step="1" placeholder="st">
+          <input id="weight-lb" type="number" inputmode="decimal" min="0" max="13.9" step="0.1" placeholder="lb">
+        </div>
+      </div>
+      <div class="field">
+        <label>Goal weight</label>
+        <div id="goal-kg-wrap" class="field">
+          <input id="goal-kg" type="number" inputmode="decimal" min="30" max="300" step="0.1" placeholder="kg">
+        </div>
+        <div id="goal-st-wrap" class="pair field hidden">
+          <input id="goal-st" type="number" inputmode="numeric" min="4" max="40" step="1" placeholder="st">
+          <input id="goal-lb" type="number" inputmode="decimal" min="0" max="13.9" step="0.1" placeholder="lb">
+        </div>
+      </div>
+      <button class="btn" id="save-profile" type="button">Save details</button>
+
+      <div id="calc-out"></div>
+
+      <h3>Today’s food</h3>
+      <p class="lead">Optional. Enter what you ate today and compare it with your daily target.</p>
+      <div class="food-box">
+        <div class="field" style="margin-top:0">
+          <label for="eaten">Calories eaten today</label>
+          <input id="eaten" type="number" inputmode="numeric" min="0" max="10000" step="1" placeholder="kcal">
+        </div>
+        <button class="btn" id="save-eaten" type="button">Save today’s calories</button>
+        <div class="food-status missing" id="food-status">Add your details first to see a target.</div>
+      </div>
+
+      <h3>Workouts burned</h3>
+      <div class="food-box" id="burn-summary"></div>
+
+      <h3>Weight log</h3>
+      <p class="lead">Add a date and a weight. The chart uses these entries.</p>
+      <div class="log-box">
+        <div class="fields-row">
+          <div class="field" style="margin-top:0">
+            <label for="log-date">Date</label>
+            <input id="log-date" type="date">
+          </div>
+          <div class="field" style="margin-top:0" id="log-weight-field">
+            <label for="log-weight">Weight</label>
+            <input id="log-weight" type="number" inputmode="decimal" step="0.1" placeholder="kg">
+          </div>
+        </div>
+        <div id="log-st-wrap" class="pair field hidden">
+          <input id="log-st" type="number" inputmode="numeric" step="1" placeholder="st">
+          <input id="log-lb" type="number" inputmode="decimal" step="0.1" placeholder="lb">
+        </div>
+        <button class="btn" id="add-weight" type="button">Add weight</button>
+        <div id="weight-stats"></div>
+        <div class="chart-wrap" id="chart-wrap"></div>
+        <ul class="weight-list" id="weight-list"></ul>
+      </div>
+    </section>
+
+
+    <section class="progress-page" id="diet">
+      <div class="panel" style="padding-left:0;padding-right:0">
+        <div class="month-scroll" id="diet-months"></div>
+      </div>
+      <div id="diet-body"></div>
+    </section>
 
     <section class="notes" id="notes">
       <h2>Notes &amp; settings</h2>
@@ -75,24 +193,47 @@
       <p>Most of the follow-along videos include a short warm-up. If one does not, spend two or three minutes on easy arm circles, leg swings, and bodyweight squats first. Move in a range that feels comfortable.</p>
 
       <h3>Food, in brief</h3>
-      <p>To lose fat you generally need to eat fewer calories than you use, over time. To gain or keep muscle, keep training and include a protein source at meals (for example eggs, fish, meat, dairy, beans or a simple protein food you already eat). There are no calorie targets here, because those depend on your size, age and daily life. If you want specific numbers, a GP or a registered dietitian can help.</p>
+      <p>To lose fat you generally need to eat fewer calories than you use, over time. To gain or keep muscle, keep training and include a protein source at meals (for example eggs, fish, meat, dairy, beans or a simple protein food you already eat). Open the Progress tab to see a personal calorie and protein estimate from your details. Those figures are estimates, not medical advice. A GP or a registered dietitian can help if you want a plan made for you.</p>
 
       <h3>Sleep</h3>
       <p>A regular 7–9 hours is a common adult range. Training feels harder when you are short on sleep, so treat rest days and bedtime as part of the plan.</p>
 
       <h3>How the week works</h3>
-      <p>Each month has a repeating Monday–Friday plan, used for four weeks. Use the weekly rule at the top of the month to progress. Follow the YouTube video for timing; use the written list if you train without the video. YouTube needs a connection. The rest of this app works offline once it has been opened.</p>
+      <p>Each month has a repeating Monday–Friday plan, used for four weeks. Use the weekly rule at the top of the month to progress. Tap Start workout to follow the in-app exercise clips with a timer. The written list is there if you train without the player. Once opened, the app and clips work offline.</p>
     </section>
   </div>
 
+  <div id="player" class="player hidden">
+    <video id="player-video" playsinline muted loop></video>
+    <div class="player-ui">
+      <div class="player-top">
+        <div class="eyebrow" id="player-phase">Work</div>
+        <button class="btn-ghost" id="player-end" type="button">End</button>
+      </div>
+      <div id="player-name" class="player-name"></div>
+      <div id="player-clock" class="player-clock">0:00</div>
+      <div id="player-next" class="player-next"></div>
+      <div class="bar"><span id="player-bar-fill"></span></div>
+      <div class="player-total" id="player-total"></div>
+      <div class="player-actions">
+        <button class="btn-ghost" id="player-skip" type="button">Skip</button>
+        <button class="btn" id="player-pause" type="button">Pause</button>
+      </div>
+    </div>
+  </div>
+
   <nav class="tabbar">
-    <div class="inner">
+    <div class="inner four">
       <button class="tab active" id="tab-plan" type="button">Programme</button>
+      <button class="tab" id="tab-progress" type="button">Progress</button>
+      <button class="tab" id="tab-diet" type="button">Diet</button>
       <button class="tab" id="tab-notes" type="button">Notes</button>
     </div>
   </nav>
   <div class="toast" id="toast" role="status"></div>
   <script src="./program.js"></script>
+  <script src="./clips.js"></script>
+  <script src="./diet.js"></script>
   <script src="./app.js"></script>
 </body>
 </html>
