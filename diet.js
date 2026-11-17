@@ -1,328 +1,319 @@
 const DIET_BASE_KCAL = 1800;
-const DIET_BASE_PROTEIN = 110;
+const DIET_BASE_PROTEIN = 120;
+
+function yt(id, title, channel) {
+  return { title, channel, url: "https://www.youtube.com/watch?v=" + id };
+}
+
+const YT = {
+  catfish: yt("ulnDthexo1E", "Catfish Pepper Soup AKA Point and Kill - Watch This Before You Make Fish Pepper Soup - African Food", "Precious Kitchen"),
+  chickenPs: yt("lnV6fj6xWgI", "How to make Nigerian Chicken Peppersoup for beginners | step by step", "Tspices Kitchen"),
+  moiMoi: yt("ccjOaLGqiX8", "Nigerian Moi Moi with Beans Flour | Flo Chinyere", "Flo Chinyere"),
+  beans: yt("k9b6E0eu6hc", "Benefits of Honey Beans | Super Healthy Nigerian Brown Beans Recipe", "Cosy Nutrition"),
+  suya: yt("Nh_l3222JhI", "Oven Grilled Suya Chicken//How To Make The Best Chicken Suya @MasofsKitchen", "Masof's Kitchen"),
+  okra: yt("czhKqZf9VPU", "How To Make Oil - Less Okro Soup//Okro Soup without Oil @MasofsKitchen", "Masof's Kitchen"),
+  egusi: yt("yQDw8lVAhgM", "How to Make Oil-Less Egusi Soup | Healthy Nigerian Egusi Recipe for Weight Loss & Clean Eating", "Zeelicious Foods"),
+  yamEgg: yt("8c5g5XaWnqo", "Boiled Yam With Veggie Egg Sauce | Quick Nigerian Breakfast / Lunch Idea.", "Chizoba Edemuzor"),
+  ofada: yt("Jha4uYk4U2M", "How to make Authentic Ayamase Stew Recipe | Easy Ofada Sauce (Green Pepper Sauce)Start to Finish", "Meals with Abi"),
+  jollof: yt("v4w6_3fUzmI", "Let’s Cook A Big Pot Of Jollof Rice & The Juiciest Baked Chicken Recipe Using Our All Purpose Stew", "Sweet Adjeley"),
+  akara: yt("r2hVi_f4M6g", "How To Make THE BEST AKARA | Cook With Me On Saturday Morning!", "SisiYemmieTV"),
+  efo: yt("jjlaQtILJoE", "Efo Riro Recipe | Nigerian Vegetable Soup with Smoked Fish & Prawns", "cheerstv25"),
+  ugu: yt("sXKxiqy3vyk", "HOW TO COOK OFE UGU (PUMKIN LEAVES) | DELICIOUS VEGETABLE SOUP", "Assigned To Motherhood"),
+  edikang: yt("6uYUMtUD81U", "HOW TO MAKE EDIKANG IKONG SOUP//THE BEST NIGERIAN VEGETABLE SOUP RECIPE", "Cooking  With Jorouka")
+};
+
+function meal(name, items, kcal, protein, tip, video) {
+  return { name, items, kcal, protein, tip, video };
+}
+
+const M = {
+  yamEgg: meal(
+    "Boiled yam with veggie egg sauce",
+    ["200g boiled yam", "2 eggs", "tomato, onion, peppers", "1 tsp oil"],
+    430, 20,
+    "Boil the yam. Cook the sauce in a non-stick pan with 1 tsp oil, not a pour of palm oil.",
+    YT.yamEgg
+  ),
+  plantainEgg: meal(
+    "Boiled plantain with veggie egg sauce",
+    ["1 medium ripe plantain, boiled (not fried)", "2 eggs", "tomato, onion, peppers", "1 tsp oil"],
+    420, 20,
+    "The same egg sauce as the yam video. Boil the plantain; do not fry it as dodo.",
+    YT.yamEgg
+  ),
+  akaraPap: meal(
+    "Baked akara with pap (ogi)",
+    ["4–5 baked akara", "1 cup unsweetened pap with semi-skimmed milk"],
+    440, 20,
+    "Follow the batter in the video, then bake at 200°C or air-fry until golden instead of deep-frying. Lightly oil the tray only.",
+    YT.akara
+  ),
+  moiMoiPapEgg: meal(
+    "Moi moi with pap and a boiled egg",
+    ["1–2 medium steamed moi moi wraps", "unsweetened pap", "1 boiled egg"],
+    460, 28,
+    "Go easy on oil in the batter and steam, don't fry. Beans flour from a UK African shop is a shortcut.",
+    YT.moiMoi
+  ),
+  chickenPsPlantain: meal(
+    "Chicken pepper soup with boiled plantain",
+    ["200g skinless chicken", "pepper-soup spices, scent leaf, scotch bonnet", "1 small boiled plantain"],
+    500, 48,
+    "Use skinless chicken and no palm oil. Skim the broth. A small boiled plantain is enough on the side.",
+    YT.chickenPs
+  ),
+  catfishPsYam: meal(
+    "Catfish pepper soup with boiled yam",
+    ["220g catfish", "pepper-soup spices, uda, ehuru, scent leaf", "150g boiled yam"],
+    490, 44,
+    "No palm oil. Simmer the fish in a light, well-spiced broth rather than frying it first.",
+    YT.catfish
+  ),
+  beansEgg: meal(
+    "Honey beans porridge (less oil) with a boiled egg",
+    ["a generous bowl of ewa oloyin / honey beans", "onion, pepper, crayfish", "1 boiled egg"],
+    540, 30,
+    "The linked video is a no-oil honey beans method. If you use palm oil, measure 1 teaspoon — don't pour freely.",
+    YT.beans
+  ),
+  beansPlantain: meal(
+    "Beans porridge (less oil) with boiled plantain",
+    ["a bowl of honey beans or brown beans", "1 small boiled plantain", "pepper and onion"],
+    560, 24,
+    "Cook the beans with little or no palm oil, and boil the plantain instead of frying dodo.",
+    YT.beans
+  ),
+  suyaChicken: meal(
+    "Oven-grilled suya chicken with salad and yam",
+    ["150g chicken breast in yaji / suya spice", "cabbage, cucumber and tomato salad", "150g boiled yam"],
+    520, 45,
+    "Use lean chicken breast (or trimmed lean beef with the same method). Oven-grill, don't fry. Go light on oil in the rub.",
+    YT.suya
+  ),
+  suyaBeef: meal(
+    "Grilled lean beef suya with salad",
+    ["150g lean beef (trimmed), suya spice", "cabbage and tomato salad", "a small boiled sweet potato or yam"],
+    500, 42,
+    "Same oven-grill method as the chicken suya video. Choose a lean cut, trim visible fat, and skip frying.",
+    YT.suya
+  ),
+  jollofChicken: meal(
+    "Jollof rice with grilled chicken (portion-controlled)",
+    ["a fist-sized scoop of jollof (about 200g cooked)", "150g baked or grilled chicken", "side salad"],
+    590, 42,
+    "Bake or grill the chicken. Serve a measured scoop of rice — about a fist — not a heaped plate.",
+    YT.jollof
+  ),
+  jollofChickenLight: meal(
+    "Smaller jollof with grilled chicken",
+    ["a modest scoop of jollof (about 160g cooked)", "150g grilled chicken", "extra salad or steamed greens"],
+    520, 40,
+    "Keep the rice portion smaller and fill the plate with chicken and salad. Grill, don't fry.",
+    YT.jollof
+  ),
+  okraFish: meal(
+    "Oil-less okra soup with fish and boiled yam",
+    ["okra soup with fish and a little crayfish", "200g boiled yam (or a modest scoop of eba)"],
+    580, 40,
+    "Follow the oil-less okro method. Load the fish and vegetables; keep swallow or yam to a modest scoop.",
+    YT.okra
+  ),
+  egusiLight: meal(
+    "Oil-less egusi with lean chicken and a modest swallow",
+    ["oil-less egusi soup", "150g skinless chicken or lean beef", "a modest scoop of eba or amala"],
+    600, 42,
+    "Egusi is already rich. Use the oil-less method, lean meat, and a small swallow — more soup than starch.",
+    YT.egusi
+  ),
+  efoPlantain: meal(
+    "Efo riro with lean meat and boiled plantain",
+    ["efo riro with smoked fish or lean turkey", "spinach or ugu", "1 boiled plantain"],
+    560, 36,
+    "Measure 1–2 tsp palm oil instead of a generous pour. Choose lean meat or fish and pile on the greens.",
+    YT.efo
+  ),
+  uguYam: meal(
+    "Ugu soup with lean meat and boiled yam",
+    ["ofe ugu / pumpkin-leaf soup", "lean beef or turkey", "200g boiled yam or a modest amala scoop"],
+    550, 38,
+    "Frozen ugu from a UK African grocery works well. Less palm oil, lean cuts, modest starch.",
+    YT.ugu
+  ),
+  edikang: meal(
+    "Edikang ikong with lean meat and a modest swallow",
+    ["ugu and waterleaf soup", "lean beef or turkey plus fish", "a modest scoop of eba or pounded-yam powder"],
+    580, 40,
+    "The greens are the star. Cut the palm oil and fatty cuts; use lean meat and fish.",
+    YT.edikang
+  ),
+  ofadaLight: meal(
+    "Ofada rice with a lighter ayamase sauce and lean turkey",
+    ["a modest scoop of ofada or brown rice", "ayamase / ofada sauce made with less palm oil", "150g lean turkey or trimmed beef"],
+    620, 42,
+    "Traditional ayamase uses a lot of bleached palm oil. Use a much smaller amount, trim fatty cuts, and keep the rice modest.",
+    YT.ofada
+  ),
+  snackMoiMoi: meal(
+    "Moi moi",
+    ["1 medium steamed moi moi wrap"],
+    220, 14,
+    "Steam, with only a little oil in the batter. A good high-protein snack from leftover wraps.",
+    YT.moiMoi
+  ),
+  snackAkara: meal(
+    "Baked akara (two pieces)",
+    ["2 baked or air-fried akara"],
+    180, 10,
+    "Bake or air-fry the same batter. Don't deep-fry.",
+    YT.akara
+  ),
+  snackChickenPs: meal(
+    "Small bowl of chicken pepper soup",
+    ["a cup of leftover chicken pepper soup, skinless chicken"],
+    250, 30,
+    "A light, high-protein leftover. No added oil; skim the broth if needed.",
+    YT.chickenPs
+  ),
+  snackCatfish: meal(
+    "Small bowl of catfish pepper soup",
+    ["a cup of leftover catfish pepper soup"],
+    250, 30,
+    "Keep it broth-based. No palm oil.",
+    YT.catfish
+  ),
+  snackMoiMoiFruit: meal(
+    "Moi moi and fruit",
+    ["1 small moi moi wrap", "1 orange or apple"],
+    260, 14,
+    "Leftover steamed moi moi plus fruit. No fried snacks.",
+    YT.moiMoi
+  )
+};
+
+const COOK_TIPS = [
+  "Measure palm oil (1–2 teaspoons) instead of pouring it freely. Many soups taste fine with much less, or with none.",
+  "Grill, oven-bake or air-fry suya, chicken, fish and akara. Skip deep-frying and fried dodo when you can; boil plantain or yam instead.",
+  "Choose lean cuts: chicken breast, turkey, trimmed beef, and fish. Take the skin off chicken used in pepper soup.",
+  "Fill the plate with soup, fish or chicken, and greens. Keep swallow (eba, amala, pounded yam) and jollof to a modest scoop.",
+  "Steam moi moi and bake akara. Skim visible oil from stews and soups before serving."
+];
+
+const SHOP_CORE_AFRICAN = [
+  "Honey beans (ewa oloyin) or brown beans, and beans flour for moi moi",
+  "Yam (fresh or frozen) and plantain",
+  "Long-grain rice for jollof; ofada or brown rice if you can find it",
+  "Garri for eba, or yam flour (amala) / pounded-yam powder — buy a small bag and use modest scoops",
+  "Egusi (melon seeds)",
+  "Suya spice (yaji) and a pepper-soup spice mix (or uda, ehuru and calabash nutmeg)",
+  "Ground crayfish and iru / locust beans (dawadawa)",
+  "Scotch bonnet (ata rodo), tatashe or red peppers, fresh ginger",
+  "Frozen ugu (fluted pumpkin leaves); waterleaf if available, or spinach as a stand-in",
+  "Okra, scent leaf (or fresh basil if scent leaf is short)",
+  "A small bottle of palm oil — you will use it sparingly",
+  "Dried or smoked fish, and catfish if your African or Asian grocer has it",
+  "Pap / ogi / akamu"
+];
+
+const SHOP_SUPERMARKET = [
+  "Chicken breast, turkey, lean beef, eggs",
+  "Smoked mackerel or other firm white fish if catfish is hard to find",
+  "Tomatoes, onions, peppers, cabbage, cucumber, spinach",
+  "Oranges, apples, bananas",
+  "Semi-skimmed milk for pap",
+  "Tomato passata or tinned tomatoes for jollof and egg sauce",
+  "Stock cubes you already like; go easy on salt"
+];
+
+function shopping(extraAfrican, extraShop) {
+  return [
+    { aisle: "African grocery / world-food aisle (UK)", items: SHOP_CORE_AFRICAN.concat(extraAfrican || []) },
+    { aisle: "Supermarket", items: SHOP_SUPERMARKET.concat(extraShop || []) }
+  ];
+}
+
 const DIET = [
   {
     id: 1, name: "Foundation",
-    intro: "Simple, cheap meals you can cook in one pan or assemble from tins and bread. Repeat this week for the whole of Month 1.",
+    intro: "Nigerian and West African meals lead this plan: pepper soup, moi moi, beans, baked akara, and jollof with grilled chicken. High in protein, cooked with less palm oil, and scaled to your calorie target.",
     days: {
-      Mon: {
-        breakfast: { name: "Porridge with milk and banana", items: ["60g oats", "200ml semi-skimmed milk", "1 banana"], kcal: 420, protein: 16 },
-        lunch: { name: "Tuna and sweetcorn sandwich", items: ["2 slices wholemeal bread", "1 tin tuna in spring water", "1 tbsp light mayo", "sweetcorn", "1 apple"], kcal: 520, protein: 38 },
-        dinner: { name: "Chicken, rice and mixed veg", items: ["150g chicken breast", "75g dry rice", "frozen mixed vegetables", "tomato sauce"], kcal: 620, protein: 46 },
-        snacks: { name: "Greek yoghurt and a pear", items: ["170g low-fat Greek yoghurt", "1 pear"], kcal: 240, protein: 18 }
-      },
-      Tue: {
-        breakfast: { name: "Weetabix and milk", items: ["2 Weetabix", "200ml milk", "1 tsp sugar or honey", "a handful of frozen berries"], kcal: 350, protein: 14 },
-        lunch: { name: "Cheese and ham sandwich plus soup", items: ["2 slices wholemeal bread", "2 slices ham", "20g cheddar", "1 mug supermarket vegetable soup"], kcal: 530, protein: 28 },
-        dinner: { name: "Spaghetti bolognese", items: ["75g dry spaghetti", "125g lean beef mince", "tinned tomatoes and onion", "side salad"], kcal: 680, protein: 40 },
-        snacks: { name: "Banana and a small handful of peanuts", items: ["1 banana", "25g peanuts"], kcal: 280, protein: 10 }
-      },
-      Wed: {
-        breakfast: { name: "Beans on toast with an egg", items: ["2 slices wholemeal toast", "half a tin of baked beans", "1 fried or poached egg"], kcal: 450, protein: 26 },
-        lunch: { name: "Leftover bolognese or a jacket potato with beans", items: ["1 medium jacket potato", "half a tin of baked beans", "20g cheddar"], kcal: 540, protein: 22 },
-        dinner: { name: "Salmon (or tinned salmon) with potatoes and peas", items: ["1 salmon fillet or 1 large tin salmon", "250g potatoes", "frozen peas"], kcal: 640, protein: 42 },
-        snacks: { name: "Cottage cheese and crackers", items: ["150g cottage cheese", "4 plain crackers"], kcal: 250, protein: 20 }
-      },
-      Thu: {
-        breakfast: { name: "Greek yoghurt, oats and honey", items: ["170g Greek yoghurt", "40g oats", "1 tsp honey"], kcal: 400, protein: 24 },
-        lunch: { name: "Egg mayo sandwich and a banana", items: ["2 slices wholemeal bread", "2 eggs", "1 tsp light mayo", "1 banana"], kcal: 560, protein: 28 },
-        dinner: { name: "Turkey mince chilli with rice", items: ["125g turkey mince", "tinned tomatoes and kidney beans", "75g dry rice"], kcal: 650, protein: 44 },
-        snacks: { name: "Apple and cheese", items: ["1 apple", "30g cheddar"], kcal: 230, protein: 8 }
-      },
-      Fri: {
-        breakfast: { name: "Scrambled eggs on toast", items: ["2 eggs", "2 slices wholemeal toast", "a little spread"], kcal: 420, protein: 24 },
-        lunch: { name: "Tuna pasta salad", items: ["75g dry pasta, cooked and cooled", "1 tin tuna", "sweetcorn and cucumber"], kcal: 580, protein: 40 },
-        dinner: { name: "Chicken stir-fry with noodles", items: ["150g chicken", "1 nest dried egg noodles", "frozen stir-fry veg", "soy sauce"], kcal: 640, protein: 44 },
-        snacks: { name: "Milk and a digestive", items: ["200ml milk", "2 digestive biscuits"], kcal: 260, protein: 9 }
-      },
-      Sat: {
-        breakfast: { name: "Porridge with peanut butter", items: ["60g oats", "200ml milk", "1 tbsp peanut butter"], kcal: 470, protein: 20 },
-        lunch: { name: "Chicken wrap", items: ["1 large wrap", "100g leftover chicken", "salad", "1 tbsp yoghurt"], kcal: 500, protein: 36 },
-        dinner: { name: "Fish finger bake alternative: white fish, oven chips and peas", items: ["1 white fish fillet", "150g oven chips", "frozen peas"], kcal: 620, protein: 36 },
-        snacks: { name: "Yoghurt and berries", items: ["170g Greek yoghurt", "frozen berries"], kcal: 220, protein: 16 }
-      },
-      Sun: {
-        breakfast: { name: "Eggs, beans and toast", items: ["2 eggs", "half a tin of baked beans", "1 slice wholemeal toast"], kcal: 430, protein: 28 },
-        lunch: { name: "Roast-style chicken dinner (simple)", items: ["150g chicken", "250g potatoes", "frozen carrots and broccoli", "gravy"], kcal: 650, protein: 44 },
-        dinner: { name: "Omelette with cheese and leftover veg", items: ["3 eggs", "20g cheddar", "leftover vegetables", "side salad"], kcal: 520, protein: 36 },
-        snacks: { name: "Banana", items: ["1 banana"], kcal: 100, protein: 1 }
-      }
+      Mon: { breakfast: M.yamEgg, lunch: M.chickenPsPlantain, dinner: M.jollofChicken, snacks: M.snackMoiMoi },
+      Tue: { breakfast: M.akaraPap, lunch: M.beansEgg, dinner: M.okraFish, snacks: M.snackChickenPs },
+      Wed: { breakfast: M.moiMoiPapEgg, lunch: M.suyaChicken, dinner: M.efoPlantain, snacks: M.snackAkara },
+      Thu: { breakfast: M.plantainEgg, lunch: M.catfishPsYam, dinner: M.egusiLight, snacks: M.snackMoiMoi },
+      Fri: { breakfast: M.akaraPap, lunch: M.jollofChickenLight, dinner: M.uguYam, snacks: M.snackCatfish },
+      Sat: { breakfast: M.yamEgg, lunch: M.beansPlantain, dinner: M.ofadaLight, snacks: M.snackChickenPs },
+      Sun: { breakfast: M.moiMoiPapEgg, lunch: M.suyaBeef, dinner: M.efoPlantain, snacks: M.snackMoiMoiFruit }
     },
-    shopping: [
-      { aisle: "Fresh / Tesco or Aldi aisle", items: ["7 bananas", "7 apples", "2 pears", "1 orange optional", "2 onions", "a bag of salad", "cucumber"] },
-      { aisle: "Fridge", items: ["2 litres semi-skimmed milk", "1 kg low-fat Greek yoghurt or 4 large pots", "1 pack cottage cheese", "a block of cheddar", "1 pack ham", "a dozen eggs", "chicken breasts or thighs for 4 meals", "1 salmon fillet or 2 tins salmon", "1 pack lean beef mince"] },
-      { aisle: "Freezer", items: ["mixed vegetables", "peas", "stir-fry veg", "berries", "oven chips for Saturday"] },
-      { aisle: "Cupboard", items: ["porridge oats", "Weetabix", "wholemeal bread (2 loaves over the week, freeze a few slices)", "rice", "pasta/spaghetti", "tinned tuna (4 tins)", "baked beans (3 tins)", "tinned tomatoes (3)", "sweetcorn", "kidney beans", "peanut butter", "light mayo", "peanuts", "digestives", "crackers", "stock or gravy"] }
-    ]
+    shopping: shopping(["Catfish if you can get it this week", "Scent leaf for pepper soup"])
   },
   {
     id: 2, name: "Build",
-    intro: "Still supermarket basics, with a bit more yoghurt, chicken and mince to support training.",
+    intro: "The same Nigerian rotation, with more ugu, efo riro and oil-less okra. Keep swallow modest and protein high as the workouts get a little denser.",
     days: {
-      Mon: {
-        breakfast: { name: "Porridge, milk, banana and a scoop of yoghurt", items: ["60g oats", "200ml milk", "1 banana", "80g Greek yoghurt"], kcal: 500, protein: 24 },
-        lunch: { name: "Chicken and salad sandwich", items: ["2 slices wholemeal bread", "100g chicken", "salad and light mayo"], kcal: 480, protein: 36 },
-        dinner: { name: "Lentil dhal with rice", items: ["1 tin lentils", "onion, garlic, curry powder, tinned tomatoes", "75g dry rice"], kcal: 620, protein: 28 },
-        snacks: { name: "Cottage cheese and pineapple (tinned in juice)", items: ["150g cottage cheese", "3 rings pineapple"], kcal: 220, protein: 18 }
-      },
-      Tue: {
-        breakfast: { name: "Weetabix, milk and a boiled egg", items: ["2 Weetabix", "200ml milk", "1 boiled egg"], kcal: 400, protein: 20 },
-        lunch: { name: "Tuna crunch pittas", items: ["2 wholemeal pittas", "1 tin tuna", "sweetcorn and cucumber"], kcal: 540, protein: 38 },
-        dinner: { name: "Pork or chicken loin, mash and veg", items: ["150g pork or chicken", "250g potatoes", "frozen mixed veg"], kcal: 650, protein: 44 },
-        snacks: { name: "Peanuts and an apple", items: ["25g peanuts", "1 apple"], kcal: 260, protein: 8 }
-      },
-      Wed: {
-        breakfast: { name: "Peanut butter on toast and a banana", items: ["2 slices wholemeal toast", "1 tbsp peanut butter", "1 banana"], kcal: 480, protein: 16 },
-        lunch: { name: "Leftover dhal in a wrap, plus yoghurt", items: ["1 wrap", "leftover lentils", "120g yoghurt"], kcal: 520, protein: 26 },
-        dinner: { name: "Beef mince and potato cottage pie", items: ["125g lean mince", "onion and tinned tomatoes", "250g mash on top"], kcal: 680, protein: 38 },
-        snacks: { name: "Greek yoghurt", items: ["170g Greek yoghurt"], kcal: 130, protein: 16 }
-      },
-      Thu: {
-        breakfast: { name: "Overnight oats", items: ["60g oats", "150g yoghurt", "100ml milk", "frozen berries"], kcal: 450, protein: 22 },
-        lunch: { name: "Ham salad box and a yoghurt", items: ["3 slices ham", "salad", "1 wholemeal roll", "120g yoghurt"], kcal: 520, protein: 32 },
-        dinner: { name: "Baked chicken thighs, rice and broccoli", items: ["2 skinless chicken thighs", "75g dry rice", "frozen broccoli"], kcal: 650, protein: 46 },
-        snacks: { name: "Cheese and crackers", items: ["25g cheddar", "4 crackers"], kcal: 230, protein: 9 }
-      },
-      Fri: {
-        breakfast: { name: "Beans, eggs and toast", items: ["half a tin of baked beans", "2 eggs", "1 slice toast"], kcal: 430, protein: 28 },
-        lunch: { name: "Pasta with tuna and peas", items: ["75g dry pasta", "1 tin tuna", "frozen peas"], kcal: 580, protein: 40 },
-        dinner: { name: "Chilli con carne with rice", items: ["125g lean mince", "kidney beans and tomatoes", "75g dry rice"], kcal: 670, protein: 42 },
-        snacks: { name: "Banana", items: ["1 banana"], kcal: 100, protein: 1 }
-      },
-      Sat: {
-        breakfast: { name: "Porridge and honey", items: ["60g oats", "200ml milk", "1 tsp honey"], kcal: 400, protein: 16 },
-        lunch: { name: "Egg fried rice (simple, leftover rice)", items: ["leftover rice, about 200g cooked", "2 eggs", "frozen peas and soy sauce"], kcal: 560, protein: 24 },
-        dinner: { name: "Salmon pasta", items: ["75g dry pasta", "1 salmon fillet or tin", "frozen spinach or peas"], kcal: 640, protein: 40 },
-        snacks: { name: "Yoghurt and a digestive", items: ["170g yoghurt", "1 digestive"], kcal: 230, protein: 14 }
-      },
-      Sun: {
-        breakfast: { name: "Scrambled eggs on toast", items: ["3 eggs", "2 slices toast"], kcal: 480, protein: 30 },
-        lunch: { name: "Chicken, stuffing-style veg and potatoes", items: ["150g chicken", "250g potatoes", "frozen veg"], kcal: 640, protein: 44 },
-        dinner: { name: "Tomato soup with a cheese toastie", items: ["1 carton tomato soup", "2 slices bread", "30g cheddar"], kcal: 520, protein: 20 },
-        snacks: { name: "Apple", items: ["1 apple"], kcal: 80, protein: 0 }
-      }
+      Mon: { breakfast: M.akaraPap, lunch: M.catfishPsYam, dinner: M.efoPlantain, snacks: M.snackMoiMoi },
+      Tue: { breakfast: M.yamEgg, lunch: M.suyaChicken, dinner: M.okraFish, snacks: M.snackChickenPs },
+      Wed: { breakfast: M.moiMoiPapEgg, lunch: M.beansEgg, dinner: M.uguYam, snacks: M.snackChickenPs },
+      Thu: { breakfast: M.plantainEgg, lunch: M.chickenPsPlantain, dinner: M.jollofChicken, snacks: M.snackMoiMoi },
+      Fri: { breakfast: M.akaraPap, lunch: M.suyaBeef, dinner: M.egusiLight, snacks: M.snackCatfish },
+      Sat: { breakfast: M.moiMoiPapEgg, lunch: M.jollofChickenLight, dinner: M.ofadaLight, snacks: M.snackChickenPs },
+      Sun: { breakfast: M.yamEgg, lunch: M.beansEgg, dinner: M.edikang, snacks: M.snackCatfish }
     },
-    shopping: [
-      { aisle: "Fresh", items: ["7 bananas", "6 apples", "berries or a bag of frozen instead", "onions", "peppers", "salad"] },
-      { aisle: "Fridge", items: ["2 litres milk", "Greek yoghurt", "cottage cheese", "cheddar", "ham", "a dozen eggs", "chicken", "turkey mince", "1 salmon fillet or tins", "pork or chicken for Tuesday"] },
-      { aisle: "Freezer", items: ["mixed veg", "broccoli", "peas", "spinach"] },
-      { aisle: "Cupboard", items: ["oats", "Weetabix", "bread", "wraps", "rice", "pasta", "tinned tuna", "lentils", "tinned tomatoes", "beans", "peanut butter", "peanuts", "curry powder or a mild jar sauce", "soy sauce"] }
-    ]
+    shopping: shopping(["Extra frozen ugu and spinach", "Smoked fish for efo riro"])
   },
   {
     id: 3, name: "Strength",
-    intro: "A slightly higher-protein week. Batch-cook the pasta bake and curry so weeknights stay short.",
+    intro: "Oil-less egusi, a lighter ofada sauce, grilled suya and pepper soup do the heavy lifting for protein, with beans and moi moi still in the breakfast and lunch rotation.",
     days: {
-      Mon: {
-        breakfast: { name: "Porridge, milk and two eggs on the side", items: ["60g oats", "200ml milk", "2 boiled eggs"], kcal: 520, protein: 30 },
-        lunch: { name: "Tuna jacket potato", items: ["1 large jacket potato", "1 tin tuna", "1 tbsp light mayo", "salad"], kcal: 560, protein: 36 },
-        dinner: { name: "Chicken fajita-style wrap bowl", items: ["150g chicken", "peppers and onion", "75g dry rice", "1 tbsp yoghurt"], kcal: 650, protein: 46 },
-        snacks: { name: "Greek yoghurt", items: ["200g Greek yoghurt"], kcal: 150, protein: 18 }
-      },
-      Tue: {
-        breakfast: { name: "Weetabix, milk and a banana", items: ["2 Weetabix", "200ml milk", "1 banana"], kcal: 400, protein: 14 },
-        lunch: { name: "Chicken pasta salad", items: ["75g dry pasta", "100g chicken", "sweetcorn and cucumber"], kcal: 560, protein: 38 },
-        dinner: { name: "Turkey mince pasta bake", items: ["125g turkey mince", "75g dry pasta", "tinned tomatoes", "20g cheese on top"], kcal: 680, protein: 44 },
-        snacks: { name: "Apple and peanuts", items: ["1 apple", "25g peanuts"], kcal: 260, protein: 8 }
-      },
-      Wed: {
-        breakfast: { name: "Yoghurt bowl", items: ["200g Greek yoghurt", "40g oats", "berries", "1 tsp honey"], kcal: 430, protein: 26 },
-        lunch: { name: "Ham and cheese sandwich plus an orange", items: ["2 slices wholemeal bread", "2 slices ham", "20g cheddar", "1 orange"], kcal: 520, protein: 26 },
-        dinner: { name: "White fish, new potatoes and green beans", items: ["1 white fish fillet", "250g potatoes", "frozen green beans"], kcal: 560, protein: 40 },
-        snacks: { name: "Milk and banana", items: ["200ml milk", "1 banana"], kcal: 230, protein: 9 }
-      },
-      Thu: {
-        breakfast: { name: "Beans on toast and a yoghurt", items: ["2 slices toast", "half a tin of beans", "120g yoghurt"], kcal: 450, protein: 24 },
-        lunch: { name: "Leftover pasta bake", items: ["a generous leftover portion"], kcal: 560, protein: 32 },
-        dinner: { name: "Chicken curry with rice (jar sauce is fine)", items: ["150g chicken", "75g dry rice", "half a jar mild curry sauce", "frozen veg"], kcal: 680, protein: 44 },
-        snacks: { name: "Cottage cheese and cucumber", items: ["150g cottage cheese"], kcal: 140, protein: 18 }
-      },
-      Fri: {
-        breakfast: { name: "Scrambled eggs and toast", items: ["3 eggs", "2 slices toast"], kcal: 480, protein: 30 },
-        lunch: { name: "Tuna and bean salad", items: ["1 tin tuna", "1/2 tin mixed beans", "salad and a little oil"], kcal: 480, protein: 42 },
-        dinner: { name: "Lean beef stir-fry with noodles", items: ["125g lean beef strips or mince", "1 nest noodles", "frozen stir-fry veg"], kcal: 650, protein: 40 },
-        snacks: { name: "Yoghurt and honey", items: ["170g yoghurt", "1 tsp honey"], kcal: 180, protein: 16 }
-      },
-      Sat: {
-        breakfast: { name: "Porridge and peanut butter", items: ["60g oats", "200ml milk", "1 tbsp peanut butter"], kcal: 470, protein: 20 },
-        lunch: { name: "Chicken baguette", items: ["1 small baguette or 2 slices bread", "100g chicken", "salad"], kcal: 500, protein: 34 },
-        dinner: { name: "Homemade pizza on a wrap or pitta", items: ["2 pittas or wraps", "tomato puree", "60g cheese", "ham or tuna", "side salad"], kcal: 640, protein: 36 },
-        snacks: { name: "Banana", items: ["1 banana"], kcal: 100, protein: 1 }
-      },
-      Sun: {
-        breakfast: { name: "Eggs and beans", items: ["2 eggs", "half a tin of beans", "1 slice toast"], kcal: 400, protein: 26 },
-        lunch: { name: "Simple roast chicken plate", items: ["150g chicken", "250g roast or boiled potatoes", "carrots and peas", "gravy"], kcal: 680, protein: 46 },
-        dinner: { name: "Omelette and salad", items: ["3 eggs", "20g cheese", "leftover veg"], kcal: 480, protein: 32 },
-        snacks: { name: "Yoghurt", items: ["170g yoghurt"], kcal: 130, protein: 16 }
-      }
+      Mon: { breakfast: M.moiMoiPapEgg, lunch: M.suyaChicken, dinner: M.egusiLight, snacks: M.snackCatfish },
+      Tue: { breakfast: M.yamEgg, lunch: M.chickenPsPlantain, dinner: M.ofadaLight, snacks: M.snackMoiMoi },
+      Wed: { breakfast: M.akaraPap, lunch: M.beansEgg, dinner: M.okraFish, snacks: M.snackChickenPs },
+      Thu: { breakfast: M.plantainEgg, lunch: M.catfishPsYam, dinner: M.jollofChicken, snacks: M.snackAkara },
+      Fri: { breakfast: M.moiMoiPapEgg, lunch: M.suyaBeef, dinner: M.uguYam, snacks: M.snackMoiMoiFruit },
+      Sat: { breakfast: M.yamEgg, lunch: M.jollofChickenLight, dinner: M.efoPlantain, snacks: M.snackChickenPs },
+      Sun: { breakfast: M.akaraPap, lunch: M.beansPlantain, dinner: M.edikang, snacks: M.snackCatfish }
     },
-    shopping: [
-      { aisle: "Fresh", items: ["7 bananas", "apples and an orange", "salad", "onion", "peppers"] },
-      { aisle: "Fridge", items: ["milk", "Greek yoghurt", "cottage cheese", "cheddar", "ham", "eggs (at least 12\u201315)", "chicken", "turkey mince", "white fish", "lean beef strips or mince"] },
-      { aisle: "Freezer", items: ["mixed veg", "green beans", "peas", "spinach", "berries"] },
-      { aisle: "Cupboard", items: ["oats", "Weetabix", "bread", "wraps", "rice", "pasta", "tuna", "mixed beans", "tinned tomatoes", "mild curry sauce", "peanuts", "honey"] }
-    ]
+    shopping: shopping(["Egusi (melon seeds)", "Ofada or brown rice", "Lean turkey for ayamase"])
   },
   {
     id: 4, name: "Conditioning",
-    intro: "Built for a busier conditioning month: leftovers at lunch, and a few quicker dinners.",
+    intro: "Lighter broths and grilled fish and chicken sit well next to the HIIT-style month: catfish and chicken pepper soup, oil-less okra, and baked akara instead of fried snacks.",
     days: {
-      Mon: {
-        breakfast: { name: "Overnight oats with yoghurt", items: ["60g oats", "150g yoghurt", "100ml milk", "berries"], kcal: 450, protein: 22 },
-        lunch: { name: "Tuna wrap and an apple", items: ["1 large wrap", "1 tin tuna", "salad", "1 apple"], kcal: 520, protein: 36 },
-        dinner: { name: "Chicken and vegetable soup with bread, plus leftover chicken", items: ["150g chicken in a big homemade or carton soup", "frozen veg", "2 slices bread"], kcal: 620, protein: 42 },
-        snacks: { name: "Peanuts", items: ["30g peanuts"], kcal: 180, protein: 8 }
-      },
-      Tue: {
-        breakfast: { name: "Weetabix, milk and a boiled egg", items: ["2 Weetabix", "200ml milk", "1 egg"], kcal: 400, protein: 20 },
-        lunch: { name: "Cheese salad sandwich and yoghurt", items: ["2 slices bread", "30g cheddar", "salad", "170g yoghurt"], kcal: 560, protein: 28 },
-        dinner: { name: "Sausage (chicken or 2 reduced-fat pork), mash and beans", items: ["2 sausages", "250g mash", "half a tin of beans"], kcal: 650, protein: 34 },
-        snacks: { name: "Banana", items: ["1 banana"], kcal: 100, protein: 1 }
-      },
-      Wed: {
-        breakfast: { name: "Porridge and banana", items: ["60g oats", "200ml milk", "1 banana"], kcal: 420, protein: 16 },
-        lunch: { name: "Leftover sausage in a wrap, plus salad", items: ["1 wrap", "leftover sausage", "salad and yoghurt"], kcal: 500, protein: 24 },
-        dinner: { name: "Cod or pollock, rice and peas", items: ["1 white fish fillet", "75g dry rice", "frozen peas"], kcal: 600, protein: 40 },
-        snacks: { name: "Cottage cheese and crackers", items: ["150g cottage cheese", "4 crackers"], kcal: 250, protein: 20 }
-      },
-      Thu: {
-        breakfast: { name: "Greek yoghurt, banana and oats", items: ["170g yoghurt", "40g oats", "1 banana"], kcal: 450, protein: 22 },
-        lunch: { name: "Chicken salad box", items: ["120g chicken", "salad", "1 wholemeal roll"], kcal: 500, protein: 38 },
-        dinner: { name: "Pasta with lean mince and tomato sauce", items: ["75g dry pasta", "125g lean mince", "tinned tomatoes"], kcal: 680, protein: 40 },
-        snacks: { name: "Apple and cheese", items: ["1 apple", "25g cheddar"], kcal: 210, protein: 8 }
-      },
-      Fri: {
-        breakfast: { name: "Beans, toast and egg", items: ["half a tin of beans", "2 slices toast", "1 egg"], kcal: 430, protein: 22 },
-        lunch: { name: "Tuna pasta", items: ["75g dry pasta", "1 tin tuna", "sweetcorn"], kcal: 560, protein: 38 },
-        dinner: { name: "Chicken fried-style rice (low oil)", items: ["150g chicken", "200g cooked rice", "frozen veg", "1 egg"], kcal: 650, protein: 48 },
-        snacks: { name: "Yoghurt", items: ["170g yoghurt"], kcal: 130, protein: 16 }
-      },
-      Sat: {
-        breakfast: { name: "Porridge and honey", items: ["60g oats", "200ml milk", "honey"], kcal: 400, protein: 16 },
-        lunch: { name: "Egg sandwiches and a yoghurt", items: ["2 slices bread", "2 eggs", "170g yoghurt"], kcal: 540, protein: 30 },
-        dinner: { name: "Homemade burger alternative: lean beef or turkey patty, bun, salad, oven wedges", items: ["125g lean mince patty", "1 bun", "salad", "150g potato wedges"], kcal: 700, protein: 38 },
-        snacks: { name: "Milk", items: ["200ml milk"], kcal: 100, protein: 7 }
-      },
-      Sun: {
-        breakfast: { name: "Scrambled eggs on toast", items: ["3 eggs", "2 slices toast"], kcal: 480, protein: 30 },
-        lunch: { name: "Roast chicken leftovers plate", items: ["150g chicken", "250g potatoes", "veg and gravy"], kcal: 650, protein: 44 },
-        dinner: { name: "Tomato pasta with cheese", items: ["75g dry pasta", "tinned tomatoes and garlic", "30g cheddar"], kcal: 560, protein: 22 },
-        snacks: { name: "Yoghurt and berries", items: ["170g yoghurt", "berries"], kcal: 200, protein: 16 }
-      }
+      Mon: { breakfast: M.plantainEgg, lunch: M.catfishPsYam, dinner: M.okraFish, snacks: M.snackMoiMoi },
+      Tue: { breakfast: M.akaraPap, lunch: M.chickenPsPlantain, dinner: M.efoPlantain, snacks: M.snackCatfish },
+      Wed: { breakfast: M.yamEgg, lunch: M.suyaChicken, dinner: M.uguYam, snacks: M.snackMoiMoiFruit },
+      Thu: { breakfast: M.moiMoiPapEgg, lunch: M.beansEgg, dinner: M.jollofChickenLight, snacks: M.snackChickenPs },
+      Fri: { breakfast: M.akaraPap, lunch: M.catfishPsYam, dinner: M.edikang, snacks: M.snackAkara },
+      Sat: { breakfast: M.plantainEgg, lunch: M.suyaBeef, dinner: M.egusiLight, snacks: M.snackMoiMoi },
+      Sun: { breakfast: M.moiMoiPapEgg, lunch: M.beansPlantain, dinner: M.ofadaLight, snacks: M.snackChickenPs }
     },
-    shopping: [
-      { aisle: "Fresh", items: ["bananas", "apples", "salad", "onion"] },
-      { aisle: "Fridge", items: ["milk", "yoghurt", "cottage cheese", "cheddar", "ham", "eggs", "chicken", "lean mince", "white fish", "chicken or reduced-fat sausages"] },
-      { aisle: "Freezer", items: ["mixed veg", "peas", "oven wedges or potatoes you can bake"] },
-      { aisle: "Cupboard", items: ["oats", "Weetabix", "bread", "wraps", "rolls", "rice", "pasta", "noodles", "tuna", "baked beans", "soup cartons", "peanuts", "digestives", "stock"] }
-    ]
+    shopping: shopping(["Plenty of catfish or a firm white-fish stand-in", "Extra okra and ugu"])
   },
   {
     id: 5, name: "Advanced",
-    intro: "Familiar UK staples, rotated so you are not eating the same dinner every night.",
+    intro: "A full rotation of the lighter Nigerian staples — ugu, edikang ikong, ofada with less oil, grilled suya, and jollof kept to a measured scoop.",
     days: {
-      Mon: {
-        breakfast: { name: "Porridge, milk, yoghurt and berries", items: ["60g oats", "150ml milk", "100g yoghurt", "berries"], kcal: 450, protein: 22 },
-        lunch: { name: "Chicken caesar-style wrap (no fancy kit needed)", items: ["1 wrap", "100g chicken", "salad", "1 tbsp yoghurt"], kcal: 480, protein: 34 },
-        dinner: { name: "Chickpea curry and rice", items: ["1 tin chickpeas", "onion, curry powder, tinned tomatoes", "75g dry rice"], kcal: 620, protein: 22 },
-        snacks: { name: "Greek yoghurt and honey", items: ["200g yoghurt", "1 tsp honey"], kcal: 180, protein: 20 }
-      },
-      Tue: {
-        breakfast: { name: "Eggs on toast", items: ["2 eggs", "2 slices toast"], kcal: 400, protein: 24 },
-        lunch: { name: "Tuna rice pot", items: ["1 tin tuna", "200g cooked rice", "sweetcorn and soy or mayo"], kcal: 560, protein: 36 },
-        dinner: { name: "Chicken traybake (chicken, potatoes, frozen veg, one tin of tomatoes)", items: ["150g chicken", "250g potatoes", "frozen veg"], kcal: 650, protein: 44 },
-        snacks: { name: "Peanuts and an apple", items: ["25g peanuts", "1 apple"], kcal: 260, protein: 8 }
-      },
-      Wed: {
-        breakfast: { name: "Weetabix, milk and banana", items: ["2 Weetabix", "200ml milk", "1 banana"], kcal: 400, protein: 14 },
-        lunch: { name: "Leftover traybake in a box, plus yoghurt", items: ["leftover chicken and potatoes", "170g yoghurt"], kcal: 560, protein: 36 },
-        dinner: { name: "Spaghetti with tuna, garlic and peas", items: ["75g dry spaghetti", "1 tin tuna", "frozen peas"], kcal: 600, protein: 40 },
-        snacks: { name: "Cheese and crackers", items: ["25g cheddar", "4 crackers"], kcal: 230, protein: 9 }
-      },
-      Thu: {
-        breakfast: { name: "Yoghurt, oats and banana", items: ["170g yoghurt", "40g oats", "1 banana"], kcal: 450, protein: 22 },
-        lunch: { name: "Ham salad sandwich and soup", items: ["2 slices bread", "2 slices ham", "1 mug soup"], kcal: 500, protein: 24 },
-        dinner: { name: "Turkey meatballs (oven) with pasta", items: ["125g turkey mince as 6 small balls", "75g dry pasta", "tomato sauce"], kcal: 660, protein: 42 },
-        snacks: { name: "Cottage cheese", items: ["150g cottage cheese"], kcal: 140, protein: 18 }
-      },
-      Fri: {
-        breakfast: { name: "Beans and eggs on toast", items: ["half a tin of beans", "2 eggs", "1 slice toast"], kcal: 430, protein: 28 },
-        lunch: { name: "Chicken noodle pot", items: ["100g chicken", "1 nest noodles", "frozen veg"], kcal: 520, protein: 32 },
-        dinner: { name: "Fish and potatoes with peas", items: ["1 fish fillet", "250g potatoes", "peas"], kcal: 600, protein: 38 },
-        snacks: { name: "Banana and yoghurt", items: ["1 banana", "120g yoghurt"], kcal: 200, protein: 10 }
-      },
-      Sat: {
-        breakfast: { name: "Porridge and peanut butter", items: ["60g oats", "200ml milk", "1 tbsp peanut butter"], kcal: 470, protein: 20 },
-        lunch: { name: "Cheese omelette and toast", items: ["3 eggs", "30g cheddar", "1 slice toast"], kcal: 520, protein: 34 },
-        dinner: { name: "Chilli and rice", items: ["125g lean mince", "beans and tomatoes", "75g dry rice"], kcal: 670, protein: 42 },
-        snacks: { name: "Apple", items: ["1 apple"], kcal: 80, protein: 0 }
-      },
-      Sun: {
-        breakfast: { name: "Big breakfast-style plate (home, not a cafe)", items: ["2 eggs", "1 reduced-fat sausage or extra egg", "beans", "1 toast"], kcal: 500, protein: 32 },
-        lunch: { name: "Roast chicken dinner", items: ["150g chicken", "250g potatoes", "veg and gravy"], kcal: 680, protein: 46 },
-        dinner: { name: "Soup and a sandwich", items: ["1 carton soup", "2 slices bread", "ham or cheese"], kcal: 480, protein: 20 },
-        snacks: { name: "Yoghurt", items: ["170g yoghurt"], kcal: 130, protein: 16 }
-      }
+      Mon: { breakfast: M.yamEgg, lunch: M.suyaChicken, dinner: M.edikang, snacks: M.snackMoiMoi },
+      Tue: { breakfast: M.moiMoiPapEgg, lunch: M.catfishPsYam, dinner: M.jollofChicken, snacks: M.snackAkara },
+      Wed: { breakfast: M.akaraPap, lunch: M.beansEgg, dinner: M.uguYam, snacks: M.snackChickenPs },
+      Thu: { breakfast: M.plantainEgg, lunch: M.chickenPsPlantain, dinner: M.ofadaLight, snacks: M.snackMoiMoiFruit },
+      Fri: { breakfast: M.yamEgg, lunch: M.suyaBeef, dinner: M.okraFish, snacks: M.snackCatfish },
+      Sat: { breakfast: M.akaraPap, lunch: M.jollofChickenLight, dinner: M.efoPlantain, snacks: M.snackChickenPs },
+      Sun: { breakfast: M.moiMoiPapEgg, lunch: M.beansPlantain, dinner: M.egusiLight, snacks: M.snackMoiMoi }
     },
-    shopping: [
-      { aisle: "Fresh", items: ["bananas", "apples", "salad", "onion"] },
-      { aisle: "Fridge", items: ["milk", "yoghurt", "cottage cheese", "cheddar", "ham", "eggs", "chicken", "turkey mince", "white fish"] },
-      { aisle: "Freezer", items: ["mixed veg", "berries", "peas"] },
-      { aisle: "Cupboard", items: ["oats", "Weetabix", "bread", "wraps", "rice", "pasta", "noodles", "tuna", "chickpeas", "tinned tomatoes", "beans", "peanut butter", "peanuts", "curry powder", "soup"] }
-    ]
+    shopping: shopping(["Waterleaf if you can find it, otherwise spinach with ugu", "Lean beef for suya"])
   },
   {
     id: 6, name: "Peak",
-    intro: "A peak-month week that still stays on porridge, eggs, chicken, tuna, rice and yoghurt.",
+    intro: "The same high-protein Nigerian rotation you already know, so the last month is easy to shop and cook. Keep portions honest and cooking light as you finish the programme.",
     days: {
-      Mon: {
-        breakfast: { name: "Porridge, milk and banana", items: ["60g oats", "200ml milk", "1 banana"], kcal: 420, protein: 16 },
-        lunch: { name: "Chicken sandwich and yoghurt", items: ["2 slices bread", "100g chicken", "salad", "170g yoghurt"], kcal: 560, protein: 44 },
-        dinner: { name: "Salmon, rice and greens", items: ["1 salmon fillet or tin", "75g dry rice", "frozen greens"], kcal: 650, protein: 40 },
-        snacks: { name: "Cottage cheese and an apple", items: ["150g cottage cheese", "1 apple"], kcal: 200, protein: 18 }
-      },
-      Tue: {
-        breakfast: { name: "Weetabix, milk and a boiled egg", items: ["2 Weetabix", "200ml milk", "1 egg"], kcal: 400, protein: 20 },
-        lunch: { name: "Tuna pittas", items: ["2 pittas", "1 tin tuna", "salad"], kcal: 520, protein: 36 },
-        dinner: { name: "Chicken pasta with tomato and spinach", items: ["150g chicken", "75g dry pasta", "tinned tomatoes", "frozen spinach"], kcal: 670, protein: 50 },
-        snacks: { name: "Peanuts", items: ["25g peanuts"], kcal: 150, protein: 7 }
-      },
-      Wed: {
-        breakfast: { name: "Yoghurt bowl with oats and honey", items: ["200g yoghurt", "40g oats", "honey and berries"], kcal: 430, protein: 26 },
-        lunch: { name: "Leftover chicken pasta", items: ["leftover portion"], kcal: 560, protein: 36 },
-        dinner: { name: "Bean chilli with rice", items: ["2 tins mixed beans", "tomatoes, onion, chilli powder", "75g dry rice"], kcal: 640, protein: 28 },
-        snacks: { name: "Banana and milk", items: ["1 banana", "200ml milk"], kcal: 230, protein: 9 }
-      },
-      Thu: {
-        breakfast: { name: "Eggs and toast", items: ["2 eggs", "2 slices toast"], kcal: 400, protein: 24 },
-        lunch: { name: "Ham salad roll and yoghurt", items: ["1 roll", "3 slices ham", "salad", "170g yoghurt"], kcal: 520, protein: 32 },
-        dinner: { name: "Pork or chicken steak, mash and veg", items: ["150g meat", "250g mash", "frozen veg"], kcal: 660, protein: 44 },
-        snacks: { name: "Apple and cheese", items: ["1 apple", "25g cheddar"], kcal: 210, protein: 8 }
-      },
-      Fri: {
-        breakfast: { name: "Beans on toast and yoghurt", items: ["2 slices toast", "half a tin of beans", "120g yoghurt"], kcal: 450, protein: 24 },
-        lunch: { name: "Tuna pasta salad", items: ["75g dry pasta", "1 tin tuna", "sweetcorn"], kcal: 560, protein: 38 },
-        dinner: { name: "Stir-fry chicken and noodles", items: ["150g chicken", "1 nest noodles", "frozen veg"], kcal: 640, protein: 44 },
-        snacks: { name: "Digestives and milk", items: ["2 digestives", "200ml milk"], kcal: 250, protein: 8 }
-      },
-      Sat: {
-        breakfast: { name: "Porridge and peanut butter", items: ["60g oats", "200ml milk", "1 tbsp peanut butter"], kcal: 470, protein: 20 },
-        lunch: { name: "Egg wrap", items: ["1 wrap", "2 eggs", "spinach or leftover veg"], kcal: 420, protein: 24 },
-        dinner: { name: "Lean mince tacos or wraps", items: ["125g lean mince", "2 wraps", "salad and yoghurt", "tinned tomatoes"], kcal: 700, protein: 42 },
-        snacks: { name: "Yoghurt", items: ["170g yoghurt"], kcal: 130, protein: 16 }
-      },
-      Sun: {
-        breakfast: { name: "Scrambled eggs, beans and toast", items: ["3 eggs", "half a tin of beans", "1 slice toast"], kcal: 500, protein: 36 },
-        lunch: { name: "Roast-style dinner", items: ["150g chicken", "250g potatoes", "veg and gravy"], kcal: 680, protein: 46 },
-        dinner: { name: "Omelette and salad", items: ["3 eggs", "leftover veg", "20g cheese"], kcal: 480, protein: 32 },
-        snacks: { name: "Banana", items: ["1 banana"], kcal: 100, protein: 1 }
-      }
+      Mon: { breakfast: M.akaraPap, lunch: M.chickenPsPlantain, dinner: M.jollofChicken, snacks: M.snackMoiMoi },
+      Tue: { breakfast: M.yamEgg, lunch: M.beansEgg, dinner: M.okraFish, snacks: M.snackCatfish },
+      Wed: { breakfast: M.moiMoiPapEgg, lunch: M.suyaChicken, dinner: M.efoPlantain, snacks: M.snackChickenPs },
+      Thu: { breakfast: M.plantainEgg, lunch: M.catfishPsYam, dinner: M.egusiLight, snacks: M.snackAkara },
+      Fri: { breakfast: M.akaraPap, lunch: M.jollofChickenLight, dinner: M.uguYam, snacks: M.snackMoiMoiFruit },
+      Sat: { breakfast: M.yamEgg, lunch: M.suyaBeef, dinner: M.ofadaLight, snacks: M.snackChickenPs },
+      Sun: { breakfast: M.moiMoiPapEgg, lunch: M.beansPlantain, dinner: M.edikang, snacks: M.snackCatfish }
     },
-    shopping: [
-      { aisle: "Fresh", items: ["bananas", "apples", "salad", "onion"] },
-      { aisle: "Fridge", items: ["milk", "yoghurt", "cottage cheese", "cheddar", "ham", "eggs (plenty)", "chicken for several meals", "lean mince", "salmon or tinned salmon"] },
-      { aisle: "Freezer", items: ["greens", "mixed veg", "stir-fry veg", "berries"] },
-      { aisle: "Cupboard", items: ["oats", "Weetabix", "bread", "pittas and wraps", "rice", "pasta", "noodles", "tuna", "mixed beans", "tinned tomatoes", "peanut butter", "peanuts", "digestives"] }
-    ]
+    shopping: shopping(["Restock beans flour, yaji and pepper-soup spices", "Frozen ugu and plantain for the last weeks"])
   }
 ];

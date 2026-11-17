@@ -161,7 +161,7 @@
     </section>
 
 
-    <section class="progress-page" id="diet">
+    <section class="progress-page" id="diet" data-version="nigeria-diet-v4">
       <div class="panel" style="padding-left:0;padding-right:0">
         <div class="month-scroll" id="diet-months"></div>
       </div>
@@ -204,7 +204,7 @@
   </div>
 
   <div id="player" class="player hidden">
-    <video id="player-video" playsinline muted loop></video>
+    <video id="player-video" playsinline webkit-playsinline muted loop x-webkit-airplay="allow" airplay="allow"></video>
     <div class="player-ui">
       <div class="player-top">
         <div class="eyebrow" id="player-phase">Work</div>
@@ -215,6 +215,8 @@
       <div id="player-next" class="player-next"></div>
       <div class="bar"><span id="player-bar-fill"></span></div>
       <div class="player-total" id="player-total"></div>
+      <button class="btn player-tv-btn" id="player-tv" type="button">Watch on TV</button>
+      <p class="player-tv-help" id="player-tv-help">Phone and TV need the same Wi-Fi. On iPhone this opens AirPlay. If your Samsung does not appear, open Control Center and use Screen Mirroring (AirPlay). Recipe videos: open in YouTube and tap Cast to TV.</p>
       <div class="player-actions">
         <button class="btn-ghost" id="player-skip" type="button">Skip</button>
         <button class="btn" id="player-pause" type="button">Pause</button>

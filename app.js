@@ -553,19 +553,30 @@ function addWeight() {
   toast("Weight saved");
 }
 
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, (ch) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  }[ch]));
+}
+
 function renderDiet() {
   const month = DIET[view.dietMonth - 1];
   const c = compute();
   const scale = c ? c.target / DIET_BASE_KCAL : 1;
-  const pScale = c ? c.protein / DIET_BASE_PROTEIN : 1;
   const used = Math.max(scale, 1e-6);
+  const dietEl = $("diet");
+  if (dietEl) dietEl.setAttribute("data-version", "nigeria-diet-v4");
   $("diet-months").innerHTML = DIET.map((m) => {
     const active = view.dietMonth === m.id ? " active" : "";
-    return `<button class="pill${active}" data-diet="${m.id}">Month ${m.id}<small>${m.name}</small></button>`;
+    return `<button class="pill${active}" data-diet="${m.id}">Month ${m.id}<small>${escapeHtml(m.name)}</small></button>`;
   }).join("");
   const scaleNote = c
-    ? `Menus are written at about ${DIET_BASE_KCAL} kcal and ${DIET_BASE_PROTEIN} g protein. Your daily target is ${Math.round(c.target)} kcal and ${Math.round(c.protein)} g protein, so use about ${used.toFixed(2)}× these portions.`
-    : `Menus are written at about ${DIET_BASE_KCAL} kcal and ${DIET_BASE_PROTEIN} g protein a day. Add your details in Progress to scale portions to your target.`;
+    ? `Menus are written at about ${DIET_BASE_KCAL} kcal and ${DIET_BASE_PROTEIN} g protein (estimates). Your daily target is ${Math.round(c.target)} kcal and ${Math.round(c.protein)} g protein, so use about ${used.toFixed(2)}× these portions.`
+    : `Menus are written at about ${DIET_BASE_KCAL} kcal and ${DIET_BASE_PROTEIN} g protein a day (estimates). Add your details in Progress to scale portions to your target.`;
   const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
   const meals = days.map((d) => {
     const row = month.days[d];
@@ -574,27 +585,73 @@ function renderDiet() {
       const m = row[s];
       const kcal = Math.round(m.kcal * used);
       const pro = Math.round(m.protein * used);
-      return `<div class="meal"><div class="k">${s}</div><div class="name">${m.name}</div><div class="items">${m.items.join(" · ")}</div><div class="dose">${kcal} kcal · ${pro} g protein</div></div>`;
+      const tip = m.tip ? `<p class="meal-tip">${escapeHtml(m.tip)}</p>` : "";
+      const yt = m.video
+        ? `<a class="meal-yt" href="${escapeHtml(m.video.url)}" target="_blank" rel="noopener noreferrer">
+            <span class="meal-yt-badge">▶</span>
+            <span class="meal-yt-meta"><strong>${escapeHtml(m.video.title)}</strong><small>${escapeHtml(m.video.channel)} · Cast to TV in YouTube</small></span>
+          </a>`
+        : "";
+      return `<div class="meal"><div class="k">${s}</div><div class="name">${escapeHtml(m.name)}</div><div class="items">${escapeHtml(m.items.join(" · "))}</div><div class="dose">~${kcal} kcal · ~${pro} g protein <span class="est">estimates</span></div>${tip}${yt}</div>`;
     }).join("");
     return `<div class="day-menu"><h3>${d}</h3>${blocks}</div>`;
   }).join("");
-  const shop = month.shopping.map((g) => `<h4>${g.aisle}</h4><ul>${g.items.map((i) => `<li>${i}</li>`).join("")}</ul>`).join("");
+  const shop = month.shopping.map((g) => `<h4>${escapeHtml(g.aisle)}</h4><ul>${g.items.map((i) => `<li>${escapeHtml(i)}</li>`).join("")}</ul>`).join("");
+  const tips = typeof COOK_TIPS !== "undefined"
+    ? `<div class="cook-tips"><h3>Lower-fat cooking</h3><ul>${COOK_TIPS.map((tip) => `<li>${escapeHtml(tip)}</li>`).join("")}</ul></div>`
+    : "";
   $("diet-body").innerHTML = `
-    <h2>Month ${month.id} · ${month.name}</h2>
-    <p class="lead">${month.intro}</p>
-    <p class="fine">${scaleNote} Swap like-for-like if you need to (for example tuna for chicken, yoghurt for cottage cheese, a frozen vegetable mix for peas). This is a simple food plan, not medical advice. Speak to a GP or a registered dietitian if you have a health condition, or before a large change to how you eat.</p>
-    ${days.map((d, i) => "").join("")}
+    <h2>Month ${month.id} · ${escapeHtml(month.name)}</h2>
+    <p class="lead">${escapeHtml(month.intro)}</p>
+    <p class="fine">${scaleNote} Figures on each meal are estimates, not lab-measured values. Swap a similar Nigerian meal if you need to (for example chicken pepper soup for catfish, spinach for ugu). This is a simple food plan, not medical advice. Speak to a GP or a registered dietitian if you have a health condition, or before a large change to how you eat.</p>
+    ${tips}
     ${meals}
     <h3>Shopping list (one person, one week)</h3>
-    <p class="fine">Written for the base menu. Buy a little more or less to match your portion scale above.</p>
+    <p class="fine">Written for the base menu, including UK supermarket and African grocery items. Buy a little more or less to match your portion scale above.</p>
     <div class="shop">${shop}</div>
   `;
+}
+
+
+function prepareVideoCast(video) {
+  if (!video) return;
+  video.setAttribute("x-webkit-airplay", "allow");
+  video.setAttribute("airplay", "allow");
+  video.setAttribute("webkit-playsinline", "");
+  video.playsInline = true;
+  video.disableRemotePlayback = false;
+}
+
+function watchWorkoutOnTv() {
+  const video = $("player-video");
+  if (!video) return;
+  prepareVideoCast(video);
+  const help = "Phone and TV need the same Wi-Fi. On iPhone, Watch on TV opens AirPlay. If your Samsung does not appear, open Control Center and use Screen Mirroring (AirPlay).";
+  video.play().catch(() => {});
+  if (typeof video.webkitShowPlaybackTargetPicker === "function") {
+    try {
+      video.webkitShowPlaybackTargetPicker();
+      return;
+    } catch (err) {
+      toast(help);
+      return;
+    }
+  }
+  const remote = video.remote;
+  if (remote && typeof remote.prompt === "function") {
+    Promise.resolve(remote.prompt()).then(() => {}).catch(() => {
+      toast(help);
+    });
+    return;
+  }
+  toast(help);
 }
 
 function startWorkout(wd, completeId) {
   const session = buildSession(wd);
   player = { steps: session.steps, i: 0, left: session.steps[0].seconds, total: session.total, remain: session.total, paused: false, timer: null, completeId, lastBeep: 0 };
   $("player").classList.remove("hidden");
+  prepareVideoCast($("player-video"));
   showPlayerStep(true);
   tickPlayer();
 }
@@ -764,6 +821,7 @@ function init() {
     renderDiet();
   });
 
+  $("player-tv").addEventListener("click", watchWorkoutOnTv);
   $("player-pause").addEventListener("click", () => {
     if (!player) return;
     player.paused = !player.paused;
