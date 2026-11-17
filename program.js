@@ -7,8 +7,9 @@ const PROGRAM = {
     {
       id: 1,
       name: "Foundation",
-      goal: "Learn the basic moves slowly and with control.",
-      rule: "Use the easier variation until your form feels solid. Each week, try to add 1–2 reps or hold a position about 5 seconds longer.",
+      goal: "Learn the basic moves slowly, with control, at a gentle low-impact pace.",
+      rule: "Month 1 is low-impact: no jumping or hopping. Use the easier variation (wall or knee push-ups, a smaller range, or a march in place). Talk test: you should be able to speak in short sentences. Breathe out on the effort; do not hold your breath. Stop if you feel dizzy, unwell, or have chest pain.",
+      lowImpact: "This month is already low-impact. Keep every landing soft, and step or march rather than jump.",
       days: {
         Mon: {
           focus: "Upper body",
@@ -30,11 +31,11 @@ const PROGRAM = {
           focus: "Lower body",
           mins: 20,
           exercises: [
-            { name: "Bodyweight squats", dose: "45s on", rest: "15s" },
-            { name: "Reverse lunges (alternate legs)", dose: "45s on", rest: "15s" },
-            { name: "Glute bridges", dose: "45s on", rest: "15s" },
-            { name: "Curtsy lunges", dose: "45s on", rest: "15s" },
-            { name: "Calf raises", dose: "45s on", rest: "15s" }
+            { name: "Bodyweight squats (slow, no jump)", dose: "45s on", rest: "20s" },
+            { name: "Reverse lunges (alternate legs, step — do not hop)", dose: "45s on", rest: "20s" },
+            { name: "Glute bridges", dose: "45s on", rest: "20s" },
+            { name: "Curtsy lunges (step, no hop)", dose: "45s on", rest: "20s" },
+            { name: "Calf raises (soft landing, no bounce)", dose: "45s on", rest: "20s" }
           ],
           note: "The follow-along video uses 45 seconds of work and 15 seconds of rest. Repeat the circuit until the 20 minutes are up, or just follow the video.",
           video: {
@@ -80,12 +81,12 @@ const PROGRAM = {
           focus: "Full body",
           mins: 20,
           exercises: [
-            { name: "Reverse lunges", dose: "45s", rest: "15s" },
-            { name: "Curtsy lunge to narrow squat", dose: "45s", rest: "15s" },
-            { name: "Side lunges (each side)", dose: "45s", rest: "15s" },
-            { name: "Push-ups (knees or toes)", dose: "45s", rest: "15s" },
-            { name: "Forearm plank (or pike shifts)", dose: "45s", rest: "15s" },
-            { name: "Bicycle crunches", dose: "45s", rest: "15s" }
+            { name: "Reverse lunges (step, no hop)", dose: "45s", rest: "20s" },
+            { name: "Curtsy lunge to narrow squat (no jump)", dose: "45s", rest: "20s" },
+            { name: "Side lunges (each side, step — no hop)", dose: "45s", rest: "20s" },
+            { name: "Push-ups (knees or wall if you prefer)", dose: "45s", rest: "20s" },
+            { name: "Forearm plank (knees down if you need) — keep breathing", dose: "45s", rest: "20s" },
+            { name: "Bicycle crunches (steady pace, do not hold your breath)", dose: "45s", rest: "20s" }
           ],
           video: {
             title: "20 Min Full Body Workout (No Equipment)",
@@ -99,7 +100,8 @@ const PROGRAM = {
       id: 2,
       name: "Build",
       goal: "Add a little more work on the same movement patterns.",
-      rule: "Keep the quality from Month 1. If last week felt comfortable, add a few reps or shorten rest by a few seconds. Stay with a harder variation only when it is clean.",
+      rule: "Keep the quality from Month 1. If last week felt comfortable, add a few reps or shorten rest by a few seconds. Stay with a harder variation only when it is clean. Talk test: you should still be able to speak in short sentences. Do not hold your breath. A low-impact swap (march or step instead of any jump) is always fine.",
+      lowImpact: "Low-impact swap: march or step instead of jumping or hopping. Drop to your knees for push-ups if you need to.",
       days: {
         Mon: {
           focus: "Upper body",
@@ -187,7 +189,8 @@ const PROGRAM = {
       id: 3,
       name: "Strength",
       goal: "Move toward harder variations of the same exercises.",
-      rule: "When you can do the easier variation with control, switch to the harder one shown in the video for as many clean reps as you can, then drop back to finish the set.",
+      rule: "When you can do the easier variation with control, switch to the harder one for as many clean reps as you can, then drop back to finish the set. Talk test still applies if the pace feels too hard. Breathe out on the effort; do not hold your breath.",
+      lowImpact: "Low-impact swap: march or step instead of jumping or hopping. Drop to your knees for push-ups, and shorten the range on lunges or squats if you need to.",
       days: {
         Mon: {
           focus: "Upper body",
@@ -257,7 +260,7 @@ const PROGRAM = {
           mins: 20,
           exercises: [
             { name: "Low-impact bodyweight circuit", dose: "follow the video", rest: "as shown" },
-            { name: "Keep landings soft; march instead of jumping if you prefer", dose: "—", rest: "—" }
+            { name: "Low-impact swap: keep landings soft; march instead of jumping", dose: "use this option any time", rest: "—" }
           ],
           video: {
             title: "20-Minute Bodyweight Workout for Beginners (No Repeats)",
@@ -271,7 +274,8 @@ const PROGRAM = {
       id: 4,
       name: "Conditioning",
       goal: "Keep the strength work, and add short, hard efforts.",
-      rule: "Work intervals should feel hard; rest intervals should actually be rest. Walk, march, or skip jumps whenever you need to. Stop if you feel dizzy or unwell.",
+      rule: "Work intervals can feel harder, but rest should actually be rest. Walk, march, or skip jumps whenever you need to — the low-impact swap is always available. Use the talk test; do not hold your breath. Stop if you feel dizzy, unwell, or have chest pain.",
+      lowImpact: "Low-impact swap: march or step instead of any jump or hop. Keep landings soft. You can stay with the Month 1 pace at any time.",
       days: {
         Mon: {
           focus: "Upper body",
@@ -327,7 +331,7 @@ const PROGRAM = {
           mins: 20,
           exercises: [
             { name: "20 moves, about 40s on / 20s rest", dose: "follow the video", rest: "20s, as shown" },
-            { name: "March or step instead of jumping if you need a lower impact option", dose: "—", rest: "—" }
+            { name: "Low-impact swap: march or step instead of any jumping move", dose: "use this option any time", rest: "—" }
           ],
           video: {
             title: "20 Moves in 20 Minutes  - Bodyweight HIIT | Joe Wicks Workouts",
@@ -340,7 +344,7 @@ const PROGRAM = {
           mins: 20,
           exercises: [
             { name: "Full-body bodyweight HIIT", dose: "follow the video", rest: "as shown" },
-            { name: "Take the quieter variation of any jumping move", dose: "—", rest: "—" }
+            { name: "Low-impact swap: take the quieter, no-jump variation of every move", dose: "use this option any time", rest: "—" }
           ],
           video: {
             title: "20 Minute FULL BODY HIIT Workout (Bodyweight/No Equipment)",
@@ -354,7 +358,8 @@ const PROGRAM = {
       id: 5,
       name: "Advanced",
       goal: "Use harder variations of moves you already know.",
-      rule: "Start each set with the harder variation. When form slips, move to the easier one and finish the time. Do not rush the lowering part of a rep.",
+      rule: "Start each set with the harder variation. When form slips, move to the easier one and finish the time. Do not rush the lowering part of a rep. Talk test: ease off if you cannot speak in short sentences. Do not hold your breath.",
+      lowImpact: "Low-impact swap: march or step instead of jumping or hopping. Drop to knees for push-ups, and use a smaller range on single-leg work if you need to.",
       days: {
         Mon: {
           focus: "Upper body",
@@ -439,7 +444,8 @@ const PROGRAM = {
       id: 6,
       name: "Peak",
       goal: "Put the harder variations together in a steady 20-minute session.",
-      rule: "Treat this month as a polish: full range, steady breathing, and the harder variation only when it is clean. Do not add extra work beyond the 20-minute session. Rest fully on Saturday and Sunday.",
+      rule: "Treat this month as a polish: full range, steady breathing, and the harder variation only when it is clean. Talk test still applies. Do not hold your breath. Do not add extra work beyond the 20-minute session. Rest fully on Saturday and Sunday.",
+      lowImpact: "Low-impact swap: march or step instead of any jump. The easier variation of each move is always acceptable.",
       days: {
         Mon: {
           focus: "Upper body",

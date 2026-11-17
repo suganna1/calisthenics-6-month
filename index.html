@@ -52,7 +52,7 @@
     </div>
 
 
-    <section class="progress-page" id="progress" data-version="calories-v3">
+    <section class="progress-page" id="progress" data-version="progress-bp-v5">
       <h2>Progress</h2>
       <p class="lead">Calorie and weight figures are estimates, saved on this phone only. They are not medical advice.</p>
 
@@ -158,10 +158,38 @@
         <div class="chart-wrap" id="chart-wrap"></div>
         <ul class="weight-list" id="weight-list"></ul>
       </div>
+
+      <div class="log-box" id="bp-box" style="margin-top:16px">
+        <h3>Blood pressure</h3>
+        <p class="lead">Add the date, then systolic and diastolic. Pulse is optional. Readings stay on this phone only. Take them to your GP.</p>
+        <div id="bp-alert" class="bp-alert hidden" role="alert">Seek urgent medical help: call 999 or go to A&amp;E if you have chest pain, a severe headache, vision changes or breathlessness.</div>
+        <div class="field" style="margin-top:8px">
+          <label for="bp-date">Date</label>
+          <input id="bp-date" type="date">
+        </div>
+        <div class="pair field">
+          <div>
+            <label for="bp-sys">Systolic</label>
+            <input id="bp-sys" type="number" inputmode="numeric" min="60" max="250" step="1" placeholder="e.g. 120">
+          </div>
+          <div>
+            <label for="bp-dia">Diastolic</label>
+            <input id="bp-dia" type="number" inputmode="numeric" min="30" max="180" step="1" placeholder="e.g. 80">
+          </div>
+        </div>
+        <div class="field">
+          <label for="bp-pulse">Pulse (optional)</label>
+          <input id="bp-pulse" type="number" inputmode="numeric" min="30" max="220" step="1" placeholder="bpm">
+        </div>
+        <button class="btn" id="add-bp" type="button">Add reading</button>
+        <p class="fine" id="bp-gp-note">Take these readings to your GP. This log is a simple record, not a diagnosis or a substitute for medical care.</p>
+        <div class="chart-wrap" id="bp-chart"></div>
+        <ul class="weight-list" id="bp-list"></ul>
+      </div>
     </section>
 
 
-    <section class="progress-page" id="diet" data-version="nigeria-diet-v4">
+    <section class="progress-page" id="diet" data-version="nigeria-diet-v5">
       <div class="panel" style="padding-left:0;padding-right:0">
         <div class="month-scroll" id="diet-months"></div>
       </div>
@@ -187,7 +215,7 @@
       <p>On Android, open the page in Chrome and use Add to Home screen when asked, or from the browser menu.</p>
 
       <h3>Before you train</h3>
-      <p>If you have a health condition, an injury, chest pain, dizziness, or you have been inactive for a long time, speak to a GP before you start. Stop if something feels wrong. This page is a training plan, not medical advice.</p>
+      <p>If you have a health condition (including high blood pressure), an injury, chest pain, dizziness, or you have been inactive for a long time, speak to a GP before you start. Stop if something feels wrong. Use the talk test (you should be able to speak in short sentences) and do not hold your breath during effort. Log blood pressure in Progress and take the readings to your GP. This page is a training plan, not medical advice.</p>
 
       <h3>Warm-up</h3>
       <p>Most of the follow-along videos include a short warm-up. If one does not, spend two or three minutes on easy arm circles, leg swings, and bodyweight squats first. Move in a range that feels comfortable.</p>
@@ -215,6 +243,7 @@
       <div id="player-next" class="player-next"></div>
       <div class="bar"><span id="player-bar-fill"></span></div>
       <div class="player-total" id="player-total"></div>
+      <p class="player-pace" id="player-pace">Talk test: keep a pace where you can speak in short sentences. Don’t hold your breath — breathe out on the effort.</p>
       <button class="btn player-tv-btn" id="player-tv" type="button">Watch on TV</button>
       <p class="player-tv-help" id="player-tv-help">Phone and TV need the same Wi-Fi. On iPhone this opens AirPlay. If your Samsung does not appear, open Control Center and use Screen Mirroring (AirPlay). Recipe videos: open in YouTube and tap Cast to TV.</p>
       <div class="player-actions">

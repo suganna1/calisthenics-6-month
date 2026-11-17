@@ -34,7 +34,7 @@ function defaultProfile() {
 }
 
 function loadState() {
-  const base = { startDate: defaultStart(), completed: {}, profile: defaultProfile(), weightLog: [], calorieLog: {} };
+  const base = { startDate: defaultStart(), completed: {}, profile: defaultProfile(), weightLog: [], calorieLog: {}, bpLog: [] };
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return base;
@@ -45,9 +45,39 @@ function loadState() {
       completed: data.completed && typeof data.completed === "object" ? data.completed : {},
       profile: Object.assign(defaultProfile(), data.profile || {}),
       weightLog: Array.isArray(data.weightLog) ? data.weightLog : [],
-      calorieLog: data.calorieLog && typeof data.calorieLog === "object" ? data.calorieLog : {}
+      calorieLog: data.calorieLog && typeof data.calorieLog === "object" ? data.calorieLog : {},
+      bpLog: parseBpLog(data.bpLog)
     };
   } catch (e) { return base; }
+}
+
+function parseBpLog(list) {
+  if (!Array.isArray(list)) return [];
+  return list.map((e, i) => {
+    const sys = Number(e && e.sys);
+    const dia = Number(e && e.dia);
+    if (!e || !e.date || !isFinite(sys) || !isFinite(dia)) return null;
+    const pulse = e.pulse == null || e.pulse === "" ? null : Number(e.pulse);
+    return {
+      id: String(e.id || (e.date + "-" + i)),
+      date: e.date,
+      sys: Math.round(sys),
+      dia: Math.round(dia),
+      pulse: pulse != null && isFinite(pulse) ? Math.round(pulse) : null
+    };
+  }).filter(Boolean);
+}
+
+function isUrgentBp(e) {
+  return e && (e.sys >= 180 || e.dia >= 120);
+}
+
+function sortedBp() {
+  return (state.bpLog || []).slice().sort((a, b) => {
+    const d = String(a.date).localeCompare(String(b.date));
+    if (d) return d;
+    return String(a.id).localeCompare(String(b.id));
+  });
 }
 function saveState(state) { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
 
@@ -242,9 +272,16 @@ function renderWeeks() {
     return `<button class="week-pill${active}" data-week="${w}">Week ${w}${mark}</button>`;
   }).join("");
 }
+function paceNoteHtml(month) {
+  const swap = month && month.lowImpact
+    ? `<span class="swap">${escapeHtml(month.lowImpact)}</span>`
+    : "";
+  return `<div class="pace-note"><strong>Talk test.</strong> Work at a pace where you can still speak in short sentences. <strong>Don’t hold your breath.</strong> Breathe out as you push, stand or sit up.${swap}</div>`;
+}
+
 function renderPhase() {
   const m = PROGRAM.months[view.month - 1];
-  $("phase").innerHTML = `<h2>Month ${m.id} · ${m.name}</h2><p>${m.goal}</p><div class="rule"><span>This week</span>${m.rule}</div>`;
+  $("phase").innerHTML = `<h2>Month ${m.id} · ${escapeHtml(m.name)}</h2><p>${escapeHtml(m.goal)}</p><div class="rule"><span>This week</span>${escapeHtml(m.rule)}</div>${paceNoteHtml(m)}`;
 }
 function renderGrid() {
   const today = iso(new Date());
@@ -299,7 +336,8 @@ function openDay(day) {
       </div>
       <span class="badge">${mins} min</span>
     </div>
-    <div class="rule" style="margin-top:12px"><span>This week</span>${m.rule}</div>
+    <div class="rule" style="margin-top:12px"><span>This week</span>${escapeHtml(m.rule)}</div>
+    ${paceNoteHtml(m)}
     <ul class="ex-list">
       ${wd.exercises.map((ex) => `
         <li>
@@ -390,6 +428,7 @@ function fillProfileForm() {
     if (goal) $("goal-kg").value = Math.round(goal * 10) / 10;
   }
   $("log-date").value = iso(new Date());
+  if ($("bp-date")) $("bp-date").value = iso(new Date());
   $("eaten").value = state.calorieLog[iso(new Date())] || "";
 }
 function toggleUnits() {
@@ -483,6 +522,7 @@ function renderProgress() {
     ? `<p>Estimated calories from ticked workouts: <strong>${Math.round(burn)} kcal</strong> (${completedCount()} × about ${Math.round(workoutKcal(20))} kcal). Uses MET 8 for a calisthenics circuit × your current weight × 20 minutes. This is an estimate.</p>`
     : `<p class="lead" style="margin:0">Tick workouts after you add your weight to accumulate an estimated burn total.</p>`;
   renderWeight();
+  renderBp();
 }
 
 function renderWeight() {
@@ -553,6 +593,84 @@ function addWeight() {
   toast("Weight saved");
 }
 
+function addBp() {
+  const date = ($("bp-date") && $("bp-date").value) || iso(new Date());
+  const sys = Number($("bp-sys").value);
+  const dia = Number($("bp-dia").value);
+  const pulseRaw = $("bp-pulse").value;
+  if (!sys || !dia) { toast("Enter systolic and diastolic"); return; }
+  if (sys < 60 || sys > 250 || dia < 30 || dia > 180) { toast("Check the numbers and try again"); return; }
+  if (dia >= sys) { toast("Diastolic should be lower than systolic"); return; }
+  let pulse = null;
+  if (pulseRaw !== "") {
+    pulse = Number(pulseRaw);
+    if (!isFinite(pulse) || pulse < 30 || pulse > 220) { toast("Check the pulse and try again"); return; }
+  }
+  state.bpLog = state.bpLog || [];
+  state.bpLog.push({
+    id: date + "-" + Date.now(),
+    date,
+    sys: Math.round(sys),
+    dia: Math.round(dia),
+    pulse
+  });
+  $("bp-sys").value = "";
+  $("bp-dia").value = "";
+  $("bp-pulse").value = "";
+  saveState(state);
+  renderProgress();
+  toast("Reading saved");
+}
+
+function renderBp() {
+  const alertEl = $("bp-alert");
+  const chartEl = $("bp-chart");
+  const listEl = $("bp-list");
+  if (!chartEl || !listEl) return;
+  const log = sortedBp();
+  const latest = log[log.length - 1];
+  if (alertEl) alertEl.classList.toggle("hidden", !(latest && isUrgentBp(latest)));
+  chartEl.innerHTML = bpChart(log);
+  listEl.innerHTML = log.slice().reverse().map((e) => {
+    const pulse = e.pulse != null ? ` · pulse ${e.pulse}` : "";
+    const flag = isUrgentBp(e) ? ' <span class="meta">180/120 or higher</span>' : "";
+    const cls = isUrgentBp(e) ? " urgent" : "";
+    return `<li class="${cls}"><span>${parseISO(e.date).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })} · ${e.sys}/${e.dia}${pulse}${flag}</span><button type="button" data-bp-del="${escapeHtml(e.id)}">Remove</button></li>`;
+  }).join("");
+}
+
+function bpChart(log) {
+  if (!log.length) return `<div class="chart-empty">Log a reading to see the chart.</div>`;
+  const w = 360, h = 180, l = 36, r = 12, t = 16, b = 28;
+  const vals = log.flatMap((e) => [e.sys, e.dia]);
+  let min = Math.min(...vals) - 10;
+  let max = Math.max(...vals) + 10;
+  if (max === min) { max += 10; min -= 10; }
+  min = Math.max(0, min);
+  const x = (i) => l + (log.length === 1 ? (w - l - r) / 2 : (i * (w - l - r)) / (log.length - 1));
+  const y = (v) => t + ((max - v) / (max - min)) * (h - t - b);
+  const sysPts = log.map((e, i) => `${x(i).toFixed(1)},${y(e.sys).toFixed(1)}`).join(" ");
+  const diaPts = log.map((e, i) => `${x(i).toFixed(1)},${y(e.dia).toFixed(1)}`).join(" ");
+  const sysDots = log.map((e, i) => `<circle cx="${x(i).toFixed(1)}" cy="${y(e.sys).toFixed(1)}" r="3.5" fill="#ff7a1a" />`).join("");
+  const diaDots = log.map((e, i) => `<circle cx="${x(i).toFixed(1)}" cy="${y(e.dia).toFixed(1)}" r="3.5" fill="#5b8cff" />`).join("");
+  const d0 = parseISO(log[0].date).toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+  const d1 = parseISO(log[log.length - 1].date).toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+  const thresh = (max >= 180 && min <= 180)
+    ? `<line x1="${l}" y1="${y(180).toFixed(1)}" x2="${w - r}" y2="${y(180).toFixed(1)}" stroke="rgba(255,92,106,0.5)" stroke-dasharray="4 4" stroke-width="1" />`
+    : "";
+  return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Blood pressure over time">
+    <text x="4" y="${t + 4}" fill="#8b97ab" font-size="10">${Math.round(max)}</text>
+    <text x="4" y="${h - b}" fill="#8b97ab" font-size="10">${Math.round(min)}</text>
+    ${thresh}
+    <polyline fill="none" stroke="#ff7a1a" stroke-width="2.5" points="${sysPts}" />
+    <polyline fill="none" stroke="#5b8cff" stroke-width="2.5" points="${diaPts}" />
+    ${sysDots}${diaDots}
+    <text x="${l}" y="${h - 8}" fill="#8b97ab" font-size="10">${d0}</text>
+    <text x="${w - r}" y="${h - 8}" fill="#8b97ab" font-size="10" text-anchor="end">${d1}</text>
+  </svg>
+  <div class="chart-legend"><span><i style="background:#ff7a1a"></i>Systolic</span><span><i style="background:#5b8cff"></i>Diastolic</span></div>`;
+}
+
 function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, (ch) => ({
     "&": "&amp;",
@@ -569,7 +687,7 @@ function renderDiet() {
   const scale = c ? c.target / DIET_BASE_KCAL : 1;
   const used = Math.max(scale, 1e-6);
   const dietEl = $("diet");
-  if (dietEl) dietEl.setAttribute("data-version", "nigeria-diet-v4");
+  if (dietEl) dietEl.setAttribute("data-version", "nigeria-diet-v5");
   $("diet-months").innerHTML = DIET.map((m) => {
     const active = view.dietMonth === m.id ? " active" : "";
     return `<button class="pill${active}" data-diet="${m.id}">Month ${m.id}<small>${escapeHtml(m.name)}</small></button>`;
@@ -586,17 +704,24 @@ function renderDiet() {
       const kcal = Math.round(m.kcal * used);
       const pro = Math.round(m.protein * used);
       const tip = m.tip ? `<p class="meal-tip">${escapeHtml(m.tip)}</p>` : "";
+      const salt = m.salt ? `<p class="meal-salt">${escapeHtml(m.salt)}</p>` : "";
       const yt = m.video
         ? `<a class="meal-yt" href="${escapeHtml(m.video.url)}" target="_blank" rel="noopener noreferrer">
             <span class="meal-yt-badge">▶</span>
             <span class="meal-yt-meta"><strong>${escapeHtml(m.video.title)}</strong><small>${escapeHtml(m.video.channel)} · Cast to TV in YouTube</small></span>
           </a>`
         : "";
-      return `<div class="meal"><div class="k">${s}</div><div class="name">${escapeHtml(m.name)}</div><div class="items">${escapeHtml(m.items.join(" · "))}</div><div class="dose">~${kcal} kcal · ~${pro} g protein <span class="est">estimates</span></div>${tip}${yt}</div>`;
+      return `<div class="meal"><div class="k">${s}</div><div class="name">${escapeHtml(m.name)}</div><div class="items">${escapeHtml(m.items.join(" · "))}</div><div class="dose">~${kcal} kcal · ~${pro} g protein <span class="est">estimates</span></div>${tip}${salt}${yt}</div>`;
     }).join("");
     return `<div class="day-menu"><h3>${d}</h3>${blocks}</div>`;
   }).join("");
   const shop = month.shopping.map((g) => `<h4>${escapeHtml(g.aisle)}</h4><ul>${g.items.map((i) => `<li>${escapeHtml(i)}</li>`).join("")}</ul>`).join("");
+  const saltTip = typeof SALT_TIP !== "undefined"
+    ? `<div class="salt-tip"><h3>${escapeHtml(SALT_TIP.title)}</h3><p>${escapeHtml(SALT_TIP.body)}</p></div>`
+    : "";
+  const meatGuide = typeof MEAT_GUIDE !== "undefined"
+    ? `<div class="meat-guide"><h3>${escapeHtml(MEAT_GUIDE.title)}</h3><p class="lead">${escapeHtml(MEAT_GUIDE.lead)}</p><dl>${MEAT_GUIDE.items.map((it) => `<dt>${escapeHtml(it.k)}</dt><dd>${escapeHtml(it.v)}</dd>`).join("")}</dl><p class="fine">${escapeHtml(MEAT_GUIDE.foot)}</p></div>`
+    : "";
   const tips = typeof COOK_TIPS !== "undefined"
     ? `<div class="cook-tips"><h3>Lower-fat cooking</h3><ul>${COOK_TIPS.map((tip) => `<li>${escapeHtml(tip)}</li>`).join("")}</ul></div>`
     : "";
@@ -604,6 +729,8 @@ function renderDiet() {
     <h2>Month ${month.id} · ${escapeHtml(month.name)}</h2>
     <p class="lead">${escapeHtml(month.intro)}</p>
     <p class="fine">${scaleNote} Figures on each meal are estimates, not lab-measured values. Swap a similar Nigerian meal if you need to (for example chicken pepper soup for catfish, spinach for ugu). This is a simple food plan, not medical advice. Speak to a GP or a registered dietitian if you have a health condition, or before a large change to how you eat.</p>
+    ${saltTip}
+    ${meatGuide}
     ${tips}
     ${meals}
     <h3>Shopping list (one person, one week)</h3>
@@ -649,8 +776,15 @@ function watchWorkoutOnTv() {
 
 function startWorkout(wd, completeId) {
   const session = buildSession(wd);
-  player = { steps: session.steps, i: 0, left: session.steps[0].seconds, total: session.total, remain: session.total, paused: false, timer: null, completeId, lastBeep: 0 };
+  player = { steps: session.steps, i: 0, left: session.steps[0].seconds, total: session.total, remain: session.total, paused: false, timer: null, completeId, lastBeep: 0, month: view.month };
   $("player").classList.remove("hidden");
+  const pace = $("player-pace");
+  if (pace) {
+    const swap = view.month === 1
+      ? " Month 1 is low-impact: no jumping — step or march."
+      : " Low-impact swap: march or step instead of any jump.";
+    pace.textContent = "Talk test: keep a pace where you can speak in short sentences. Don’t hold your breath — breathe out on the effort." + swap;
+  }
   prepareVideoCast($("player-video"));
   showPlayerStep(true);
   tickPlayer();
@@ -811,6 +945,14 @@ function init() {
     const b = e.target.closest("[data-del]");
     if (!b) return;
     state.weightLog = state.weightLog.filter((x) => x.date !== b.getAttribute("data-del"));
+    saveState(state);
+    renderProgress();
+  });
+  $("add-bp").addEventListener("click", addBp);
+  $("bp-list").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-bp-del]");
+    if (!b) return;
+    state.bpLog = (state.bpLog || []).filter((x) => x.id !== b.getAttribute("data-bp-del"));
     saveState(state);
     renderProgress();
   });

@@ -22,178 +22,198 @@ const YT = {
   edikang: yt("6uYUMtUD81U", "HOW TO MAKE EDIKANG IKONG SOUP//THE BEST NIGERIAN VEGETABLE SOUP RECIPE", "Cooking  With Jorouka")
 };
 
-function meal(name, items, kcal, protein, tip, video) {
-  return { name, items, kcal, protein, tip, video };
+const DEFAULT_SALT = "Low salt: skip stock cubes and seasoning powder (use at most half a cube if you need one). Skip salted, dried or stockfish. Flavour with pepper, onion, garlic, ginger and herbs.";
+
+function meal(name, items, kcal, protein, tip, video, salt) {
+  return { name, items, kcal, protein, tip, video, salt: salt || DEFAULT_SALT };
 }
 
 const M = {
   yamEgg: meal(
     "Boiled yam with veggie egg sauce",
-    ["200g boiled yam", "2 eggs", "tomato, onion, peppers", "1 tsp oil"],
+    ["200g boiled yam", "2 eggs", "tomato, onion, peppers, garlic, ginger", "1 tsp oil"],
     430, 20,
-    "Boil the yam. Cook the sauce in a non-stick pan with 1 tsp oil, not a pour of palm oil.",
+    "Boil the yam. Cook the sauce in a non-stick pan with 1 tsp oil, not a pour of palm oil. No stock cube — the peppers, onion, garlic and ginger are enough.",
     YT.yamEgg
   ),
   plantainEgg: meal(
     "Boiled plantain with veggie egg sauce",
-    ["1 medium ripe plantain, boiled (not fried)", "2 eggs", "tomato, onion, peppers", "1 tsp oil"],
+    ["1 medium ripe plantain, boiled (not fried)", "2 eggs", "tomato, onion, peppers, garlic, ginger", "1 tsp oil"],
     420, 20,
-    "The same egg sauce as the yam video. Boil the plantain; do not fry it as dodo.",
+    "The same egg sauce as the yam video. Boil the plantain; do not fry it as dodo. Skip stock cubes and seasoning powder.",
     YT.yamEgg
   ),
   akaraPap: meal(
     "Baked akara with pap (ogi)",
     ["4–5 baked akara", "1 cup unsweetened pap with semi-skimmed milk"],
     440, 20,
-    "Follow the batter in the video, then bake at 200°C or air-fry until golden instead of deep-frying. Lightly oil the tray only.",
+    "Follow the batter in the video, then bake at 200°C or air-fry until golden instead of deep-frying. Lightly oil the tray only. Season the batter with pepper, onion and a little ginger — no stock cube or seasoning powder.",
     YT.akara
   ),
   moiMoiPapEgg: meal(
     "Moi moi with pap and a boiled egg",
     ["1–2 medium steamed moi moi wraps", "unsweetened pap", "1 boiled egg"],
     460, 28,
-    "Go easy on oil in the batter and steam, don't fry. Beans flour from a UK African shop is a shortcut.",
+    "Go easy on oil in the batter and steam, don't fry. Beans flour from a UK African shop is a shortcut. Leave salted fish and stock cubes out of the batter; use pepper, onion, garlic and ginger.",
     YT.moiMoi
   ),
   chickenPsPlantain: meal(
     "Chicken pepper soup with boiled plantain",
-    ["200g skinless chicken", "pepper-soup spices, scent leaf, scotch bonnet", "1 small boiled plantain"],
+    ["200g skinless chicken", "pepper-soup spices, scent leaf, scotch bonnet", "onion, garlic, ginger", "1 small boiled plantain"],
     500, 48,
-    "Use skinless chicken and no palm oil. Skim the broth. A small boiled plantain is enough on the side.",
+    "Use skinless chicken and no palm oil. Skim the broth. A small boiled plantain is enough on the side. No stock cube or seasoning powder.",
     YT.chickenPs
   ),
   catfishPsYam: meal(
     "Catfish pepper soup with boiled yam",
-    ["220g catfish", "pepper-soup spices, uda, ehuru, scent leaf", "150g boiled yam"],
+    ["220g fresh (not salted) catfish", "pepper-soup spices, uda, ehuru, scent leaf", "onion, garlic, ginger", "150g boiled yam"],
     490, 44,
-    "No palm oil. Simmer the fish in a light, well-spiced broth rather than frying it first.",
+    "No palm oil. Use fresh catfish, not salted or stockfish. Simmer in a light, well-spiced broth rather than frying it first.",
     YT.catfish
   ),
   beansEgg: meal(
     "Honey beans porridge (less oil) with a boiled egg",
-    ["a generous bowl of ewa oloyin / honey beans", "onion, pepper, crayfish", "1 boiled egg"],
+    ["a generous bowl of ewa oloyin / honey beans", "onion, pepper, garlic, ginger", "1 boiled egg"],
     540, 30,
-    "The linked video is a no-oil honey beans method. If you use palm oil, measure 1 teaspoon — don't pour freely.",
+    "The linked video is a no-oil honey beans method. If you use palm oil, measure 1 teaspoon — don't pour freely. Skip stock cubes and seasoning powder.",
     YT.beans
   ),
   beansPlantain: meal(
     "Beans porridge (less oil) with boiled plantain",
-    ["a bowl of honey beans or brown beans", "1 small boiled plantain", "pepper and onion"],
+    ["a bowl of honey beans or brown beans", "1 small boiled plantain", "pepper, onion, garlic, ginger"],
     560, 24,
-    "Cook the beans with little or no palm oil, and boil the plantain instead of frying dodo.",
+    "Cook the beans with little or no palm oil, and boil the plantain instead of frying dodo. Skip stock cubes and seasoning powder.",
     YT.beans
   ),
   suyaChicken: meal(
     "Oven-grilled suya chicken with salad and yam",
-    ["150g chicken breast in yaji / suya spice", "cabbage, cucumber and tomato salad", "150g boiled yam"],
+    ["150g chicken breast in low-salt or homemade yaji", "cabbage, cucumber and tomato salad", "150g boiled yam"],
     520, 45,
-    "Use lean chicken breast (or trimmed lean beef with the same method). Oven-grill, don't fry. Go light on oil in the rub.",
+    "Use skinless chicken breast. Oven-grill, don't fry. Go light on oil in the rub. Use a salt-free or low-salt suya rub — many shop yaji blends are salty. Save lean beef or goat for the 1–2 red-meat meals this week.",
     YT.suya
   ),
   suyaBeef: meal(
     "Grilled lean beef suya with salad",
-    ["150g lean beef (trimmed), suya spice", "cabbage and tomato salad", "a small boiled sweet potato or yam"],
+    ["150g lean beef (trimmed), low-salt or homemade suya rub", "cabbage and tomato salad", "a small boiled sweet potato or yam"],
     500, 42,
-    "Same oven-grill method as the chicken suya video. Choose a lean cut, trim visible fat, and skip frying.",
+    "This is the week’s red-meat meal (keep beef or goat to 1–2 times a week). Same oven-grill method as the chicken suya video. Choose a lean cut, trim visible fat, and skip frying. Use a low-salt rub, not a heavily salted shop suya.",
     YT.suya
   ),
   jollofChicken: meal(
     "Jollof rice with grilled chicken (portion-controlled)",
     ["a fist-sized scoop of jollof (about 200g cooked)", "150g baked or grilled chicken", "side salad"],
     590, 42,
-    "Bake or grill the chicken. Serve a measured scoop of rice — about a fist — not a heaped plate.",
+    "Bake or grill the chicken. Serve a measured scoop of rice — about a fist — not a heaped plate. Cook the jollof without a stock cube, or use at most half a cube, and flavour with tomato, pepper, onion, garlic and ginger.",
     YT.jollof
   ),
   jollofChickenLight: meal(
     "Smaller jollof with grilled chicken",
     ["a modest scoop of jollof (about 160g cooked)", "150g grilled chicken", "extra salad or steamed greens"],
     520, 40,
-    "Keep the rice portion smaller and fill the plate with chicken and salad. Grill, don't fry.",
+    "Keep the rice portion smaller and fill the plate with chicken and salad. Grill, don't fry. Low salt: skip the stock cube or use at most half, and skip seasoning powder.",
     YT.jollof
   ),
   okraFish: meal(
     "Oil-less okra soup with fish and boiled yam",
-    ["okra soup with fish and a little crayfish", "200g boiled yam (or a modest scoop of eba)"],
+    ["okra soup with fresh fish", "onion, pepper, garlic, ginger", "200g boiled yam (or a modest scoop of eba)"],
     580, 40,
-    "Follow the oil-less okro method. Load the fish and vegetables; keep swallow or yam to a modest scoop.",
+    "Follow the oil-less okro method. Load the fish and vegetables; keep swallow or yam to a modest scoop. Skip stock cubes, seasoning powder and salted fish.",
     YT.okra
   ),
   egusiLight: meal(
     "Oil-less egusi with lean chicken and a modest swallow",
-    ["oil-less egusi soup", "150g skinless chicken or lean beef", "a modest scoop of eba or amala"],
+    ["oil-less egusi soup", "150g skinless chicken or turkey", "pepper, onion, garlic, ginger", "a modest scoop of eba or amala"],
     600, 42,
-    "Egusi is already rich. Use the oil-less method, lean meat, and a small swallow — more soup than starch.",
+    "Egusi is already rich. Use the oil-less method, skinless chicken or turkey, and a small swallow — more soup than starch. Skip stock cubes, seasoning powder and salted fish.",
     YT.egusi
   ),
   efoPlantain: meal(
     "Efo riro with lean meat and boiled plantain",
-    ["efo riro with smoked fish or lean turkey", "spinach or ugu", "1 boiled plantain"],
+    ["efo riro with lean turkey or fresh fish (not salted)", "spinach or ugu", "onion, pepper, garlic, ginger", "1 boiled plantain"],
     560, 36,
-    "Measure 1–2 tsp palm oil instead of a generous pour. Choose lean meat or fish and pile on the greens.",
+    "Measure 1–2 tsp palm oil instead of a generous pour. Choose lean meat or fresh fish and pile on the greens. Skip smoked or salted fish, stock cubes and seasoning powder.",
     YT.efo
   ),
   uguYam: meal(
     "Ugu soup with lean meat and boiled yam",
-    ["ofe ugu / pumpkin-leaf soup", "lean beef or turkey", "200g boiled yam or a modest amala scoop"],
+    ["ofe ugu / pumpkin-leaf soup", "lean turkey or chicken", "onion, garlic, ginger, pepper", "200g boiled yam or a modest amala scoop"],
     550, 38,
-    "Frozen ugu from a UK African grocery works well. Less palm oil, lean cuts, modest starch.",
+    "Frozen ugu from a UK African grocery works well. Less palm oil, turkey or chicken, modest starch. No stock cube or salted fish — use herbs and pepper for flavour.",
     YT.ugu
   ),
   edikang: meal(
     "Edikang ikong with lean meat and a modest swallow",
-    ["ugu and waterleaf soup", "lean beef or turkey plus fish", "a modest scoop of eba or pounded-yam powder"],
+    ["ugu and waterleaf soup", "lean turkey or chicken plus fresh (not salted) fish", "onion, garlic, ginger", "a modest scoop of eba or pounded-yam powder"],
     580, 40,
-    "The greens are the star. Cut the palm oil and fatty cuts; use lean meat and fish.",
+    "The greens are the star. Cut the palm oil and fatty cuts; use turkey or chicken and fresh fish. Skip stockfish, salted fish and stock cubes.",
     YT.edikang
   ),
   ofadaLight: meal(
     "Ofada rice with a lighter ayamase sauce and lean turkey",
-    ["a modest scoop of ofada or brown rice", "ayamase / ofada sauce made with less palm oil", "150g lean turkey or trimmed beef"],
+    ["a modest scoop of ofada or brown rice", "ayamase / ofada sauce made with less palm oil", "150g lean turkey or chicken", "pepper, onion, garlic"],
     620, 42,
-    "Traditional ayamase uses a lot of bleached palm oil. Use a much smaller amount, trim fatty cuts, and keep the rice modest.",
+    "Traditional ayamase uses a lot of bleached palm oil. Use a much smaller amount, trim fatty cuts, and keep the rice modest. Skip stock cubes and seasoning powder.",
     YT.ofada
   ),
   snackMoiMoi: meal(
     "Moi moi",
     ["1 medium steamed moi moi wrap"],
     220, 14,
-    "Steam, with only a little oil in the batter. A good high-protein snack from leftover wraps.",
+    "Steam, with only a little oil in the batter. A good high-protein snack from leftover wraps. Keep the batter low salt: no stock cube or salted fish.",
     YT.moiMoi
   ),
   snackAkara: meal(
     "Baked akara (two pieces)",
     ["2 baked or air-fried akara"],
     180, 10,
-    "Bake or air-fry the same batter. Don't deep-fry.",
+    "Bake or air-fry the same batter. Don't deep-fry. Flavour with pepper and onion, not seasoning powder.",
     YT.akara
   ),
   snackChickenPs: meal(
     "Small bowl of chicken pepper soup",
     ["a cup of leftover chicken pepper soup, skinless chicken"],
     250, 30,
-    "A light, high-protein leftover. No added oil; skim the broth if needed.",
+    "A light, high-protein leftover. No added oil; skim the broth if needed. The leftover should already be cooked without a stock cube.",
     YT.chickenPs
   ),
   snackCatfish: meal(
     "Small bowl of catfish pepper soup",
     ["a cup of leftover catfish pepper soup"],
     250, 30,
-    "Keep it broth-based. No palm oil.",
+    "Keep it broth-based. No palm oil. Use fresh, not salted, fish, and no stock cube.",
     YT.catfish
   ),
   snackMoiMoiFruit: meal(
     "Moi moi and fruit",
     ["1 small moi moi wrap", "1 orange or apple"],
     260, 14,
-    "Leftover steamed moi moi plus fruit. No fried snacks.",
+    "Leftover steamed moi moi plus fruit. No fried snacks. The moi moi should be the low-salt, no-cube version.",
     YT.moiMoi
   )
+};
+
+const SALT_TIP = {
+  title: "Low salt for blood pressure",
+  body: "Cutting down on salt is general advice often given for high blood pressure. Every recipe here is written as a low-salt version: no stock cube, or at most half a cube if you really need one; no seasoning powder; and no salted, dried or stockfish. Build flavour with pepper, onion, garlic, ginger, herbs and spices instead. If a cooking video adds a stock cube or salted fish, skip those steps. This is general food guidance, not a personal medical plan — follow your GP’s advice."
+};
+
+const MEAT_GUIDE = {
+  title: "Meat & protein guide",
+  lead: "You don’t need to cut out meat. Protein helps keep muscle while you lose weight.",
+  items: [
+    { k: "Eat freely", v: "Skinless chicken or turkey, fish (fresh mackerel, tilapia, titus), eggs, beans and moi moi." },
+    { k: "Limit", v: "Red meat (beef, goat) to 1–2 times a week, and choose lean cuts." },
+    { k: "Avoid mostly (for blood pressure)", v: "Processed meat (sausages, corned beef), heavily salted suya, fatty cuts, shaki, ponmo and deep-fried meat." },
+    { k: "Cook", v: "Grill, boil or make pepper soup instead of frying. Go easy on stock cubes — salt raises blood pressure." },
+    { k: "Portion", v: "About the size of your palm per meal." }
+  ],
+  foot: "Follow your GP’s specific diet advice if you have been given any."
 };
 
 const COOK_TIPS = [
   "Measure palm oil (1–2 teaspoons) instead of pouring it freely. Many soups taste fine with much less, or with none.",
   "Grill, oven-bake or air-fry suya, chicken, fish and akara. Skip deep-frying and fried dodo when you can; boil plantain or yam instead.",
-  "Choose lean cuts: chicken breast, turkey, trimmed beef, and fish. Take the skin off chicken used in pepper soup.",
+  "Choose lean cuts: skinless chicken or turkey, and fresh (not salted) fish. Keep lean beef or goat to 1–2 meals a week. Take the skin off chicken used in pepper soup.",
   "Fill the plate with soup, fish or chicken, and greens. Keep swallow (eba, amala, pounded yam) and jollof to a modest scoop.",
   "Steam moi moi and bake akara. Skim visible oil from stews and soups before serving."
 ];
@@ -204,24 +224,25 @@ const SHOP_CORE_AFRICAN = [
   "Long-grain rice for jollof; ofada or brown rice if you can find it",
   "Garri for eba, or yam flour (amala) / pounded-yam powder — buy a small bag and use modest scoops",
   "Egusi (melon seeds)",
-  "Suya spice (yaji) and a pepper-soup spice mix (or uda, ehuru and calabash nutmeg)",
-  "Ground crayfish and iru / locust beans (dawadawa)",
-  "Scotch bonnet (ata rodo), tatashe or red peppers, fresh ginger",
+  "Low-salt or homemade suya rub (paprika, cayenne, ginger, garlic, onion powder) — many shop yaji blends are salty",
+  "Pepper-soup spices (uda, ehuru, calabash nutmeg) and iru / locust beans (dawadawa) for flavour without a stock cube",
+  "Scotch bonnet (ata rodo), tatashe or red peppers, plenty of fresh garlic, ginger and onions",
   "Frozen ugu (fluted pumpkin leaves); waterleaf if available, or spinach as a stand-in",
   "Okra, scent leaf (or fresh basil if scent leaf is short)",
   "A small bottle of palm oil — you will use it sparingly",
-  "Dried or smoked fish, and catfish if your African or Asian grocer has it",
-  "Pap / ogi / akamu"
+  "Fresh catfish or other fresh fish — skip salted dried fish, stockfish and salty smoked fish",
+  "Pap / ogi / akamu",
+  "Scent leaf, basil or parsley. You do not need stock cubes or seasoning powder"
 ];
 
 const SHOP_SUPERMARKET = [
-  "Chicken breast, turkey, lean beef, eggs",
-  "Smoked mackerel or other firm white fish if catfish is hard to find",
-  "Tomatoes, onions, peppers, cabbage, cucumber, spinach",
+  "Chicken breast, turkey and eggs. Lean beef only for 1–2 meals this week — skip sausages, corned beef, shaki, ponmo and fatty or processed cuts",
+  "Fresh white fish if catfish is hard to find (not salty smoked fish)",
+  "Tomatoes, onions, peppers, cabbage, cucumber, spinach, garlic and ginger",
   "Oranges, apples, bananas",
   "Semi-skimmed milk for pap",
-  "Tomato passata or tinned tomatoes for jollof and egg sauce",
-  "Stock cubes you already like; go easy on salt"
+  "Tomato passata or tinned tomatoes for jollof and egg sauce (choose a no-added-salt tin if you can)",
+  "Skip stock cubes and seasoning powder, or keep half a cube only if you must"
 ];
 
 function shopping(extraAfrican, extraShop) {
@@ -234,7 +255,7 @@ function shopping(extraAfrican, extraShop) {
 const DIET = [
   {
     id: 1, name: "Foundation",
-    intro: "Nigerian and West African meals lead this plan: pepper soup, moi moi, beans, baked akara, and jollof with grilled chicken. High in protein, cooked with less palm oil, and scaled to your calorie target.",
+    intro: "Nigerian and West African meals lead this plan, all cooked low salt: pepper soup, moi moi, beans, baked akara, and jollof with grilled chicken. High in protein, cooked with less palm oil, and scaled to your calorie target.",
     days: {
       Mon: { breakfast: M.yamEgg, lunch: M.chickenPsPlantain, dinner: M.jollofChicken, snacks: M.snackMoiMoi },
       Tue: { breakfast: M.akaraPap, lunch: M.beansEgg, dinner: M.okraFish, snacks: M.snackChickenPs },
