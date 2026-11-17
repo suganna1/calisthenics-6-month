@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0A1220">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Calisthenics 6-Month">
+  <meta name="description" content="A 6-month beginner calisthenics programme. 20-minute workouts, Monday to Friday. No equipment.">
+  <title>Calisthenics 6-Month</title>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="app">
+    <header class="top">
+      <div class="eyebrow">Kelvin Osazee</div>
+      <div class="top-row">
+        <h1>Calisthenics 6-Month</h1>
+        <div class="streak" title="Consecutive completed training days. Weekends do not break the streak.">
+          <b id="streak-num">0</b>
+          <span id="streak-label">day streak</span>
+        </div>
+      </div>
+      <div class="progress-line">
+        <span id="done-count">0 / 120 workouts</span>
+        <span id="pct">0%</span>
+      </div>
+      <div class="bar"><span id="bar-fill"></span></div>
+    </header>
+
+    <div id="plan-wrap">
+      <div id="plan-main">
+        <div class="panel">
+          <div class="month-scroll" id="months"></div>
+        </div>
+        <div class="panel" style="padding-top:0">
+          <div class="week-scroll" id="weeks"></div>
+        </div>
+        <div class="phase" id="phase"></div>
+        <div class="grid" id="grid"></div>
+        <div class="weekend" id="weekend"></div>
+        <div style="padding:0 16px 16px">
+          <button class="btn-ghost" id="jump-today" type="button">Jump to today</button>
+        </div>
+      </div>
+      <div class="sheet" id="sheet"></div>
+    </div>
+
+    <section class="notes" id="notes">
+      <h2>Notes &amp; settings</h2>
+      <p>This is a beginner-start, no-equipment programme. Workouts are about 20 minutes, Monday to Friday. Saturday and Sunday are rest days. Ticks and your streak are saved on this phone only.</p>
+
+      <div class="field">
+        <label for="start-date">Programme start (uses the Monday of the week you pick)</label>
+        <input id="start-date" type="date">
+      </div>
+      <button class="btn-ghost" id="reset-progress" type="button" style="margin-top:10px">Clear progress</button>
+
+      <h3>How to install on iPhone</h3>
+      <ul>
+        <li>Open this page in Safari (not Chrome or in-app browsers).</li>
+        <li>Tap the Share button.</li>
+        <li>Tap Add to Home Screen, then Add.</li>
+      </ul>
+      <p>On Android, open the page in Chrome and use Add to Home screen when asked, or from the browser menu.</p>
+
+      <h3>Before you train</h3>
+      <p>If you have a health condition, an injury, chest pain, dizziness, or you have been inactive for a long time, speak to a GP before you start. Stop if something feels wrong. This page is a training plan, not medical advice.</p>
+
+      <h3>Warm-up</h3>
+      <p>Most of the follow-along videos include a short warm-up. If one does not, spend two or three minutes on easy arm circles, leg swings, and bodyweight squats first. Move in a range that feels comfortable.</p>
+
+      <h3>Food, in brief</h3>
+      <p>To lose fat you generally need to eat fewer calories than you use, over time. To gain or keep muscle, keep training and include a protein source at meals (for example eggs, fish, meat, dairy, beans or a simple protein food you already eat). There are no calorie targets here, because those depend on your size, age and daily life. If you want specific numbers, a GP or a registered dietitian can help.</p>
+
+      <h3>Sleep</h3>
+      <p>A regular 7–9 hours is a common adult range. Training feels harder when you are short on sleep, so treat rest days and bedtime as part of the plan.</p>
+
+      <h3>How the week works</h3>
+      <p>Each month has a repeating Monday–Friday plan, used for four weeks. Use the weekly rule at the top of the month to progress. Follow the YouTube video for timing; use the written list if you train without the video. YouTube needs a connection. The rest of this app works offline once it has been opened.</p>
+    </section>
+  </div>
+
+  <nav class="tabbar">
+    <div class="inner">
+      <button class="tab active" id="tab-plan" type="button">Programme</button>
+      <button class="tab" id="tab-notes" type="button">Notes</button>
+    </div>
+  </nav>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="./program.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
