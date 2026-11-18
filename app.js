@@ -886,11 +886,12 @@ function startReelsWorkout(completeId) {
     return;
   }
   const session = buildReelsSession();
-  startBuiltSession(session, completeId, "Talk test: keep a pace where you can speak in short sentences. Don’t hold your breath — breathe out on the effort. One foot always stays on the floor during marches. Stop if you feel dizzy, have chest pain, or become very short of breath.");
+  startBuiltSession(session, completeId, true, "Talk test: keep a pace where you can speak in short sentences. Don’t hold your breath — breathe out on the effort. One foot always stays on the floor during marches. Stop if you feel dizzy, have chest pain, or become very short of breath.");
 }
 
-function startBuiltSession(session, completeId, paceText) {
-  player = { steps: session.steps, i: 0, left: session.steps[0].seconds, total: session.total, remain: session.total, paused: false, timer: null, completeId, lastBeep: 0, month: view.month };
+function startBuiltSession(session, completeId, withCoach, paceText) {
+  player = { steps: session.steps, i: 0, left: session.steps[0].seconds, total: session.total, remain: session.total, paused: false, timer: null, completeId, lastBeep: 0, month: view.month, coach: !!withCoach };
+  if (withCoach && typeof coachStart === "function") coachStart();
   $("player").classList.remove("hidden");
   const pace = $("player-pace");
   if (pace) pace.textContent = paceText;
@@ -979,6 +980,7 @@ function showPlayerStep(fresh) {
   const tvHelp = $("player-tv-help");
   if (tvBtn) tvBtn.classList.toggle("hidden", !vidSrc);
   if (tvHelp) tvHelp.classList.toggle("hidden", !vidSrc);
+  if (fresh && player.coach && typeof coachStep === "function") coachStep(step, player.i === 0);
   renderPlayerTime();
 }
 function renderPlayerTime() {
@@ -995,7 +997,8 @@ function tickPlayer() {
   clearInterval(player.timer);
   player.timer = setInterval(() => {
     if (!player || player.paused) return;
-    if (player.left === 3 || player.left === 2 || player.left === 1) beep(1);
+    const spoke = player.coach && typeof coachTick === "function" ? coachTick(player.steps[player.i], player.left) : false;
+    if (!spoke && (player.left === 3 || player.left === 2 || player.left === 1)) beep(1);
     player.left -= 1;
     player.remain -= 1;
     if (player.left <= 0) {
@@ -1012,6 +1015,10 @@ function tickPlayer() {
 }
 function finishWorkout(completed) {
   if (player && player.timer) clearInterval(player.timer);
+  if (player && player.coach && typeof coachStop === "function") {
+    coachStop();
+    if (completed) speakFinal();
+  }
   $("player").classList.add("hidden");
   const vid = $("player-video");
   vid.pause(); vid.removeAttribute("src"); vid.removeAttribute("data-src"); vid.load();
@@ -1149,6 +1156,7 @@ function init() {
     $("player-pause").textContent = player.paused ? "Resume" : "Pause";
     if (player.paused) { clearInterval(player.timer); $("player-video").pause(); }
     else { $("player-video").play().catch(() => {}); tickPlayer(); }
+    if (player.coach && typeof coachPause === "function") coachPause(player.paused);
   });
   $("player-skip").addEventListener("click", () => {
     if (!player) return;
@@ -1162,6 +1170,7 @@ function init() {
     showPlayerStep(true);
   });
   $("player-end").addEventListener("click", () => finishWorkout(false));
+  if (typeof initCoachControls === "function") initCoachControls();
 
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("./sw.js").then((reg) => { reg.update(); });

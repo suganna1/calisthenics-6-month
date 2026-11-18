@@ -251,6 +251,18 @@
       <p class="player-pace" id="player-pace">Talk test: keep a pace where you can speak in short sentences. Don’t hold your breath — breathe out on the effort.</p>
       <button class="btn player-tv-btn" id="player-tv" type="button">Watch on TV</button>
       <p class="player-tv-help" id="player-tv-help">Phone and TV need the same Wi-Fi. On iPhone this opens AirPlay. If your Samsung does not appear, open Control Center and use Screen Mirroring (AirPlay). Recipe videos: open in YouTube and tap Cast to TV.</p>
+      <div class="coach-controls hidden" id="coach-controls">
+        <div class="coach-row">
+          <button class="coach-toggle" id="coach-voice" type="button" aria-pressed="true">Voice: On</button>
+          <button class="coach-toggle" id="coach-music" type="button" aria-pressed="true">Music: On</button>
+        </div>
+        <label class="coach-vol">Music volume <input type="range" id="coach-volume" min="0" max="100" step="5" value="50"></label>
+        <div class="my-music">
+          <div class="my-music-title">My Music · Burna Boy, Davido, Rema, Kizz Daniel, Zlatan</div>
+          <div class="my-music-apps" id="my-music-apps"></div>
+          <p class="my-music-note">Opens the app. The built-in music turns off.</p>
+        </div>
+      </div>
       <div class="player-actions">
         <button class="btn-ghost" id="player-skip" type="button">Skip</button>
         <button class="btn" id="player-pause" type="button">Pause</button>
@@ -270,6 +282,7 @@
   <script src="./program.js"></script>
   <script src="./clips.js"></script>
   <script src="./diet.js"></script>
+  <script src="./coach.js"></script>
   <script src="./app.js"></script>
 </body>
 </html>
