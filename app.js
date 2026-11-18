@@ -937,6 +937,15 @@ function showPlayerStep(fresh) {
     if (still) still.classList.add("hidden");
     video.classList.remove("hidden");
     if (fresh || video.getAttribute("data-src") !== vidSrc) {
+      if (imgSrc) video.poster = imgSrc;
+      else video.removeAttribute("poster");
+      video.onerror = imgSrc && still ? () => {
+        if (video.getAttribute("data-src") !== vidSrc) return;
+        video.classList.add("hidden");
+        still.src = imgSrc;
+        still.setAttribute("data-src", imgSrc);
+        still.classList.remove("hidden");
+      } : null;
       video.src = vidSrc;
       video.setAttribute("data-src", vidSrc);
       video.loop = true;

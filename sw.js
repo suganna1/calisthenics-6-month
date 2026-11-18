@@ -1,4 +1,4 @@
-const CACHE = "calisthenics-6mo-v6";
+const CACHE = "calisthenics-6mo-v7";
 const ASSETS = [
   "./",
   "./index.html",
@@ -32,6 +32,18 @@ const ASSETS = [
   "./clips/squat.mp4",
   "./clips/v-up.mp4",
   "./clips/y-raise.mp4",
+  "./clips/march-running-arms.mp4",
+  "./clips/march-guard.mp4",
+  "./clips/march-crossed.mp4",
+  "./clips/toe-touch.mp4",
+  "./clips/kneeling-twist.mp4",
+  "./clips/wall-diamond.mp4",
+  "./clips/wall-sphinx.mp4",
+  "./clips/cross-crunch.mp4",
+  "./clips/seated-tuck.mp4",
+  "./clips/wall-push-up.mp4",
+  "./clips/chest-stretch.mp4",
+  "./clips/breathing.mp4",
   "./cues/march-running-arms.jpg",
   "./cues/march-guard.jpg",
   "./cues/march-crossed.jpg",

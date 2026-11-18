@@ -137,6 +137,13 @@ function cueSrc(id) {
   return id ? "./cues/" + id + ".jpg" : "";
 }
 
+const REELS_CLIPS = [
+  "march-running-arms", "march-guard", "march-crossed",
+  "toe-touch", "kneeling-twist", "wall-diamond", "wall-sphinx",
+  "cross-crunch", "seated-tuck", "wall-push-up",
+  "chest-stretch", "breathing"
+];
+
 function buildReelsSession() {
   const steps = [];
   const warm = [
@@ -194,6 +201,13 @@ function buildReelsSession() {
     { pose: "breathing", name: "Cool-down · Deep slow breathing", seconds: 60, instruction: REELS_ROUTINE.cooldown[2].cue }
   ];
   cool.forEach((s) => steps.push(Object.assign({ type: "work" }, s)));
+
+  // Every reels move has its own looping trainer clip (clips/<pose>.mp4);
+  // the cue jpg stays as the poster and fallback.
+  steps.forEach((st) => {
+    if (st.pose && REELS_CLIPS.indexOf(st.pose) !== -1) st.clip = st.pose;
+    if (st.nextPose && REELS_CLIPS.indexOf(st.nextPose) !== -1) st.nextClip = st.nextPose;
+  });
 
   const total = steps.reduce((s, st) => s + st.seconds, 0);
   return { steps, total };
