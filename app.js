@@ -109,7 +109,7 @@ function findToday() {
   return { month: view.month, week: view.week, day: null };
 }
 function completedCount() {
-  return Object.keys(state.completed).filter((k) => state.completed[k]).length;
+  return Object.keys(state.completed).filter((k) => state.completed[k] && /^\d+-\d+-(Mon|Tue|Wed|Thu|Fri)$/.test(k)).length;
 }
 function weekComplete(month, week) {
   return WEEKDAYS.every((d) => state.completed[dayId(month, week, d)]);
@@ -774,6 +774,131 @@ function watchWorkoutOnTv() {
   toast(help);
 }
 
+function reelsTodayId() { return "reels-" + iso(new Date()); }
+
+function latestBp() {
+  const list = sortedBp();
+  return list.length ? list[list.length - 1] : null;
+}
+
+function openBpLog(ev) {
+  if (ev) ev.preventDefault();
+  showTab("progress");
+  const box = $("bp-box");
+  if (box) setTimeout(() => box.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+}
+
+function renderReelsCard() {
+  const el = $("daily-reels");
+  if (!el) return;
+  const done = !!state.completed[reelsTodayId()];
+  el.className = "daily-reels" + (done ? " done" : "");
+  el.innerHTML = `
+    <div class="kicker">${done ? "Done today" : "Today’s session"}</div>
+    <h2>${escapeHtml(REELS_ROUTINE.title)} (${REELS_ROUTINE.mins} min)</h2>
+    <p class="lead">${escapeHtml(REELS_ROUTINE.subtitle)}</p>
+    <div class="meta"><span class="badge">${REELS_ROUTINE.mins} min</span><span class="badge">${escapeHtml(REELS_ROUTINE.focus)}</span></div>
+    <button class="btn" id="open-reels" type="button">${done ? "View or repeat" : "Open Daily Reels Routine"}</button>
+  `;
+  $("open-reels").addEventListener("click", openReelsRoutine);
+}
+
+function listBlock(title, items) {
+  return `<div class="ex-group"><h3>${escapeHtml(title)}</h3>
+    <ul class="ex-list">
+      ${items.map((ex) => `
+        <li>
+          <span class="name">${escapeHtml(ex.name)}</span>
+          <span class="dose">${escapeHtml(ex.dose)}</span>
+          <span class="rest">${ex.rest && ex.rest !== "—" ? "Rest: " + escapeHtml(ex.rest) : ""}</span>
+          <span class="cue">${escapeHtml(ex.cue)}</span>
+        </li>
+      `).join("")}
+    </ul>
+  </div>`;
+}
+
+function openReelsRoutine() {
+  view.day = "reels";
+  const id = reelsTodayId();
+  const done = !!state.completed[id];
+  const session = buildReelsSession();
+  const mins = Math.round(session.total / 60);
+  const burn = workoutKcal(20);
+  $("plan-main").classList.add("hidden");
+  $("sheet").classList.add("open");
+  const burnHtml = burn != null
+    ? `<div class="burn-chip">Estimate: about <strong>${Math.round(burn)} kcal</strong> for a 20-minute session (MET 8 × ${currentKg().toFixed(1)} kg × 20 min). This is an estimate, not a measurement.</div>`
+    : `<div class="burn-chip">Add your weight in Progress to see an estimated calorie burn (MET 8 × body weight × 20 min).</div>`;
+  const bp = latestBp();
+  const urgent = bp && isUrgentBp(bp);
+  const bpHtml = urgent
+    ? `<div class="safety-note warn" id="reels-bp-block" role="alert">Skip this session. Your latest reading is <strong>${bp.sys}/${bp.dia}</strong>. Do not train if it is 180/120 or higher. <a href="#bp-box" id="open-bp-log-warn">Log a new reading</a> if you have rechecked.</div>`
+    : `<div class="safety-note hidden" id="reels-bp-block" role="alert"></div>`;
+  $("sheet").innerHTML = `
+    <button class="back" id="back-btn" type="button">← Week view</button>
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow">Daily session</div>
+        <h2>${escapeHtml(REELS_ROUTINE.title)}</h2>
+      </div>
+      <span class="badge">${mins} min</span>
+    </div>
+    <p class="note">${escapeHtml(REELS_ROUTINE.subtitle)} Warm-up 3 min, then 2 rounds of 40 seconds work and 20 seconds rest, with 1 minute between rounds, then a 3-minute cool-down.</p>
+    <div class="safety-note"><strong>Before you start.</strong> ${escapeHtml(REELS_ROUTINE.safety)} <a href="#bp-box" id="open-bp-log">Open your blood pressure log</a>.</div>
+    ${bpHtml}
+    ${listBlock("Warm-up · 3 minutes", REELS_ROUTINE.warmup)}
+    ${listBlock("Main · 2 rounds, 40s work / 20s rest, 1 min between rounds", REELS_ROUTINE.main)}
+    ${listBlock("Cool-down · 3 minutes", REELS_ROUTINE.cooldown)}
+    <p class="note"><strong>Progression.</strong> ${escapeHtml(REELS_ROUTINE.progression)}</p>
+    ${paceNoteHtml({ lowImpact: "One foot always stays on the floor during marches. Kick only to a comfortable height. Use a wall or worktop for all push-ups for now." })}
+    ${burnHtml}
+    <button class="btn" id="start-workout" type="button">Start workout</button>
+    <button class="btn${done ? " done" : ""}" id="toggle-done" type="button">${done ? "Done today ✓  Tap to undo" : "Mark as done"}</button>
+  `;
+  $("back-btn").addEventListener("click", closeDay);
+  $("open-bp-log").addEventListener("click", openBpLog);
+  const warnLink = $("open-bp-log-warn");
+  if (warnLink) warnLink.addEventListener("click", openBpLog);
+  $("start-workout").addEventListener("click", () => startReelsWorkout(id));
+  $("toggle-done").addEventListener("click", () => {
+    if (state.completed[id]) delete state.completed[id];
+    else state.completed[id] = true;
+    saveState(state);
+    toast(state.completed[id] ? "Saved to this device" : "Marked not done");
+    renderAll();
+    openReelsRoutine();
+  });
+}
+
+function startReelsWorkout(completeId) {
+  const bp = latestBp();
+  if (bp && isUrgentBp(bp)) {
+    const box = $("reels-bp-block");
+    if (box) {
+      box.classList.remove("hidden");
+      box.classList.add("warn");
+      box.innerHTML = `Skip this session. Your latest reading is <strong>${bp.sys}/${bp.dia}</strong>. Do not train if it is 180/120 or higher. <a href="#bp-box" id="open-bp-log-block">Open your blood pressure log</a>.`;
+      const link = $("open-bp-log-block");
+      if (link) link.addEventListener("click", openBpLog);
+    }
+    toast("Skip this session: latest BP is " + bp.sys + "/" + bp.dia);
+    return;
+  }
+  const session = buildReelsSession();
+  startBuiltSession(session, completeId, "Talk test: keep a pace where you can speak in short sentences. Don’t hold your breath — breathe out on the effort. One foot always stays on the floor during marches. Stop if you feel dizzy, have chest pain, or become very short of breath.");
+}
+
+function startBuiltSession(session, completeId, paceText) {
+  player = { steps: session.steps, i: 0, left: session.steps[0].seconds, total: session.total, remain: session.total, paused: false, timer: null, completeId, lastBeep: 0, month: view.month };
+  $("player").classList.remove("hidden");
+  const pace = $("player-pace");
+  if (pace) pace.textContent = paceText;
+  prepareVideoCast($("player-video"));
+  showPlayerStep(true);
+  tickPlayer();
+}
+
 function startWorkout(wd, completeId) {
   const session = buildSession(wd);
   player = { steps: session.steps, i: 0, left: session.steps[0].seconds, total: session.total, remain: session.total, paused: false, timer: null, completeId, lastBeep: 0, month: view.month };
@@ -793,21 +918,58 @@ function showPlayerStep(fresh) {
   if (!player) return;
   const step = player.steps[player.i];
   const video = $("player-video");
+  const still = $("player-still");
   $("player").classList.toggle("is-rest", step.type === "rest");
-  $("player-phase").textContent = step.type === "rest" ? "Rest" : "Work";
+  $("player-phase").textContent = step.type === "rest" ? "Rest" : (String(step.name || "").indexOf("Cool-down") === 0 ? "Cool-down" : (String(step.name || "").indexOf("Warm-up") === 0 ? "Warm-up" : "Work"));
   $("player-name").textContent = step.type === "work" ? step.name : ("Rest" + (step.nextName ? " · next: " + step.nextName : ""));
   $("player-next").textContent = step.type === "rest" && step.nextName ? "Up next: " + step.nextName : (player.steps[player.i + 1] && player.steps[player.i + 1].type === "rest" && player.steps[player.i + 1].nextName ? "Next: " + player.steps[player.i + 1].nextName : "");
-  const src = step.type === "work" ? clipSrc(step.clip) : (step.nextClip ? clipSrc(step.nextClip) : "");
-  if (src && (fresh || video.getAttribute("data-src") !== src)) {
-    video.src = src;
-    video.setAttribute("data-src", src);
-    video.loop = true;
-    video.muted = true;
-    video.playsInline = true;
-    video.play().catch(() => {});
+  const cue = step.type === "work" ? (step.instruction || "") : (step.nextInstruction || "");
+  const cueEl = $("player-cue");
+  if (cueEl) {
+    cueEl.textContent = cue;
+    cueEl.classList.toggle("hidden", !cue);
   }
-  if (step.type === "rest") video.classList.add("dim");
-  else video.classList.remove("dim");
+  const clip = step.type === "work" ? step.clip : step.nextClip;
+  const pose = step.type === "work" ? step.pose : step.nextPose;
+  const vidSrc = clip ? clipSrc(clip) : "";
+  const imgSrc = pose ? cueSrc(pose) : "";
+  if (vidSrc) {
+    if (still) still.classList.add("hidden");
+    video.classList.remove("hidden");
+    if (fresh || video.getAttribute("data-src") !== vidSrc) {
+      video.src = vidSrc;
+      video.setAttribute("data-src", vidSrc);
+      video.loop = true;
+      video.muted = true;
+      video.playsInline = true;
+      video.play().catch(() => {});
+    }
+    if (step.type === "rest") video.classList.add("dim");
+    else video.classList.remove("dim");
+  } else if (imgSrc) {
+    video.pause();
+    video.removeAttribute("src");
+    video.removeAttribute("data-src");
+    video.load();
+    video.classList.add("hidden");
+    if (still) {
+      still.classList.remove("hidden");
+      if (fresh || still.getAttribute("data-src") !== imgSrc) {
+        still.src = imgSrc;
+        still.setAttribute("data-src", imgSrc);
+        still.alt = step.type === "work" ? (step.name || "") : (step.nextName || "");
+      }
+      if (step.type === "rest") still.classList.add("dim");
+      else still.classList.remove("dim");
+    }
+  } else {
+    video.pause();
+    if (still) still.classList.add("hidden");
+  }
+  const tvBtn = $("player-tv");
+  const tvHelp = $("player-tv-help");
+  if (tvBtn) tvBtn.classList.toggle("hidden", !vidSrc);
+  if (tvHelp) tvHelp.classList.toggle("hidden", !vidSrc);
   renderPlayerTime();
 }
 function renderPlayerTime() {
@@ -843,7 +1005,14 @@ function finishWorkout(completed) {
   if (player && player.timer) clearInterval(player.timer);
   $("player").classList.add("hidden");
   const vid = $("player-video");
-  vid.pause(); vid.removeAttribute("src"); vid.load();
+  vid.pause(); vid.removeAttribute("src"); vid.removeAttribute("data-src"); vid.load();
+  const still = $("player-still");
+  if (still) {
+    still.removeAttribute("src");
+    still.removeAttribute("data-src");
+    still.alt = "";
+    still.classList.add("hidden");
+  }
   if (completed && player && player.completeId) {
     state.completed[player.completeId] = true;
     saveState(state);
@@ -855,6 +1024,7 @@ function finishWorkout(completed) {
 
 function renderAll() {
   renderChrome();
+  renderReelsCard();
   renderMonths();
   renderWeeks();
   renderPhase();

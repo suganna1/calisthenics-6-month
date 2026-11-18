@@ -35,6 +35,7 @@
 
     <div id="plan-wrap">
       <div id="plan-main">
+        <div id="daily-reels"></div>
         <div class="panel">
           <div class="month-scroll" id="months"></div>
         </div>
@@ -232,13 +233,17 @@
   </div>
 
   <div id="player" class="player hidden">
-    <video id="player-video" playsinline webkit-playsinline muted loop x-webkit-airplay="allow" airplay="allow"></video>
+    <div class="player-visual">
+      <video id="player-video" playsinline webkit-playsinline muted loop x-webkit-airplay="allow" airplay="allow"></video>
+      <img id="player-still" class="hidden" alt="">
+    </div>
     <div class="player-ui">
       <div class="player-top">
         <div class="eyebrow" id="player-phase">Work</div>
         <button class="btn-ghost" id="player-end" type="button">End</button>
       </div>
       <div id="player-name" class="player-name"></div>
+      <p class="player-cue hidden" id="player-cue"></p>
       <div id="player-clock" class="player-clock">0:00</div>
       <div id="player-next" class="player-next"></div>
       <div class="bar"><span id="player-bar-fill"></span></div>

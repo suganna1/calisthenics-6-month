@@ -131,3 +131,70 @@ function buildSession(wd) {
   const total = steps.reduce((s, st) => s + st.seconds, 0);
   return { steps, total };
 }
+
+
+function cueSrc(id) {
+  return id ? "./cues/" + id + ".jpg" : "";
+}
+
+function buildReelsSession() {
+  const steps = [];
+  const warm = [
+    { pose: "march-running-arms", name: "Warm-up · Standing marches, running arms", seconds: 60, instruction: REELS_ROUTINE.warmup[0].cue },
+    { pose: "march-guard", name: "Warm-up · Standing marches, hands on hips or guard", seconds: 60, instruction: REELS_ROUTINE.warmup[1].cue },
+    { pose: "march-crossed", name: "Warm-up · Standing marches, arms crossed", seconds: 60, instruction: REELS_ROUTINE.warmup[2].cue }
+  ];
+  warm.forEach((s) => steps.push(Object.assign({ type: "work" }, s)));
+
+  const main = [
+    { pose: "toe-touch", name: REELS_ROUTINE.main[0].name, instruction: REELS_ROUTINE.main[0].cue },
+    { pose: "kneeling-twist", name: REELS_ROUTINE.main[1].name, instruction: REELS_ROUTINE.main[1].cue },
+    { pose: "wall-diamond", name: REELS_ROUTINE.main[2].name, instruction: REELS_ROUTINE.main[2].cue },
+    { pose: "wall-sphinx", name: REELS_ROUTINE.main[3].name, instruction: REELS_ROUTINE.main[3].cue },
+    { pose: "cross-crunch", name: REELS_ROUTINE.main[4].name, instruction: REELS_ROUTINE.main[4].cue },
+    { pose: "seated-tuck", name: REELS_ROUTINE.main[5].name, instruction: REELS_ROUTINE.main[5].cue },
+    { pose: "wall-push-up", name: REELS_ROUTINE.main[6].name, instruction: REELS_ROUTINE.main[6].cue }
+  ];
+
+  for (let r = 0; r < 2; r++) {
+    main.forEach((ex, i) => {
+      const lastInRound = i === main.length - 1;
+      const lastOverall = r === 1 && lastInRound;
+      steps.push({
+        type: "work",
+        pose: ex.pose,
+        name: ex.name + " · Round " + (r + 1),
+        seconds: 40,
+        instruction: ex.instruction
+      });
+      if (lastOverall) return;
+      if (lastInRound) {
+        steps.push({
+          type: "rest",
+          seconds: 60,
+          nextPose: main[0].pose,
+          nextName: main[0].name + " · Round " + (r + 2),
+          nextInstruction: main[0].instruction
+        });
+      } else {
+        steps.push({
+          type: "rest",
+          seconds: 20,
+          nextPose: main[i + 1].pose,
+          nextName: main[i + 1].name + " · Round " + (r + 1),
+          nextInstruction: main[i + 1].instruction
+        });
+      }
+    });
+  }
+
+  const cool = [
+    { pose: "march-running-arms", name: "Cool-down · Slow marching", seconds: 60, instruction: REELS_ROUTINE.cooldown[0].cue },
+    { pose: "chest-stretch", name: "Cool-down · Chest and arm stretch", seconds: 60, instruction: REELS_ROUTINE.cooldown[1].cue },
+    { pose: "breathing", name: "Cool-down · Deep slow breathing", seconds: 60, instruction: REELS_ROUTINE.cooldown[2].cue }
+  ];
+  cool.forEach((s) => steps.push(Object.assign({ type: "work" }, s)));
+
+  const total = steps.reduce((s, st) => s + st.seconds, 0);
+  return { steps, total };
+}

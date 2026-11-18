@@ -1,4 +1,4 @@
-const CACHE = "calisthenics-6mo-v5";
+const CACHE = "calisthenics-6mo-v6";
 const ASSETS = [
   "./",
   "./index.html",
@@ -31,7 +31,19 @@ const ASSETS = [
   "./clips/split-squat.mp4",
   "./clips/squat.mp4",
   "./clips/v-up.mp4",
-  "./clips/y-raise.mp4"
+  "./clips/y-raise.mp4",
+  "./cues/march-running-arms.jpg",
+  "./cues/march-guard.jpg",
+  "./cues/march-crossed.jpg",
+  "./cues/toe-touch.jpg",
+  "./cues/kneeling-twist.jpg",
+  "./cues/wall-diamond.jpg",
+  "./cues/wall-sphinx.jpg",
+  "./cues/cross-crunch.jpg",
+  "./cues/seated-tuck.jpg",
+  "./cues/wall-push-up.jpg",
+  "./cues/chest-stretch.jpg",
+  "./cues/breathing.jpg"
 ];
 
 self.addEventListener("install", (event) => {

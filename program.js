@@ -528,3 +528,33 @@ const PROGRAM = {
 
 const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"];
 const WEEKEND = ["Sat", "Sun"];
+
+
+const REELS_ROUTINE = {
+  id: "reels-daily",
+  title: "Daily Reels Routine",
+  mins: 20,
+  focus: "Full body",
+  subtitle: "Low-impact session built from your reels, made safe for you.",
+  safety: "Breathe out on the effort and never hold your breath. Use the talk test: keep a pace where you can still speak. Stop if you feel dizzy, have chest pain, or become very short of breath. Check your blood pressure first and skip this session if it is 180/120 or higher.",
+  progression: "From month 2, move the push-ups to kneeling on the floor (kneeling diamond and kneeling forearm push-ups, as in the reels). Burpees, jumping high knees, V-crunches and flip push-up combos are left out until your weight is under about 110 kg and your blood pressure is controlled, with your doctor's okay.",
+  warmup: [
+    { name: "Standing marches, running arms", dose: "1 min", rest: "—", cue: "March in place. Lift each knee toward your waist at a steady pace. Swing your arms as if jogging. Keep one foot on the floor at all times — do not hop or jump." },
+    { name: "Standing marches, hands on hips or guard", dose: "1 min", rest: "—", cue: "Keep marching, one foot always on the floor. Hands on your hips, or fists up in a light guard. Steady pace." },
+    { name: "Standing marches, arms crossed", dose: "1 min", rest: "—", cue: "Keep marching, one foot always on the floor. Cross your arms on your chest. Steady pace, no bouncing." }
+  ],
+  main: [
+    { name: "Standing cross-body toe touches", dose: "40s × 2 rounds", rest: "20s", cue: "Stand tall. Kick one leg only as high as is comfortable, with a soft knee. Reach the opposite hand toward that foot. Alternate sides. Do not force the height." },
+    { name: "Kneeling oblique twists", dose: "40s × 2 rounds", rest: "20s", cue: "Kneel tall on a cushion, core braced, hands behind your head. Slowly twist left, then right. Do not rush or yank." },
+    { name: "Wall diamond push-ups", dose: "40s × 2 rounds", rest: "20s", cue: "Place your hands on the wall at chest height, thumbs and index fingers making a diamond. Lower your chest toward your hands, then push back. Keep a straight body." },
+    { name: "Wall forearm (sphinx) push-ups", dose: "40s × 2 rounds", rest: "20s", cue: "Forearms on the wall, elbows under your shoulders. Push until your arms straighten, then lower slowly back to the forearms." },
+    { name: "Standing cross crunches", dose: "40s × 2 rounds", rest: "20s", cue: "Stand tall. Bring your right elbow toward a raised left knee, then switch. Steady pace, one foot always grounded." },
+    { name: "Seated knee tucks", dose: "40s × 2 rounds", rest: "20s", cue: "Sit on a mat or the edge of a chair. Hands on the floor or seat behind you for support. Extend your legs slightly, then pull your knees in. Use a small, comfortable range." },
+    { name: "Wall or worktop push-ups", dose: "40s × 2 rounds", rest: "20s", cue: "Hands on a wall or a sturdy worktop, standard shoulder-width grip. Lower your chest toward your hands, then push back. Keep your body in a straight line." }
+  ],
+  cooldown: [
+    { name: "Slow marching", dose: "1 min", rest: "—", cue: "March slowly in place. One foot always on the floor. Let your breathing ease." },
+    { name: "Chest and arm stretch", dose: "1 min", rest: "—", cue: "Stand tall. Open your chest and stretch your arms — for example, clasp your hands behind you, or reach one arm across your chest, then switch. Breathe slowly. Do not force the stretch." },
+    { name: "Deep slow breathing", dose: "1 min", rest: "—", cue: "Stand or sit still. Breathe in slowly through your nose, and breathe out slowly through your mouth. Do not hold your breath." }
+  ]
+};
